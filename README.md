@@ -6,7 +6,7 @@ discovery. QCLAB++ provides I/O through openQASM making it compatible with
 quantum hardware.
 
 
-## How to run? ##
+## How to run?
 
 The QCLAB++ package uses the CMake build system (CMake version ≥ 3.16).
 The recommended way of building QCLAB++ is as follows:
