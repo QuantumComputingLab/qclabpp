@@ -2,8 +2,8 @@
 QCLAB++ is a object-oriented, fully templated C++ package for creating and
 representing quantum circuits. QCLAB++ can be used for rapid prototyping and
 testing of quantum algorithms, and allows for fast algorithm development and
-discovery. QCLAB provides I/O through openQASM making it compatible with quantum
-hardware.
+discovery. QCLAB++ provides I/O through openQASM making it compatible with
+quantum hardware.
 
 
 ## How to run? ##
