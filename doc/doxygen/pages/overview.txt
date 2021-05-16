@@ -1,6 +1,4 @@
-# QCLAB++
-
-<p align="center"><img src="doc/doxygen/images/logo.png?raw=true" /></p>
+/*! \mainpage Overview
 
 QCLAB++ is an object-oriented, fully templated C++ package for creating and
 representing quantum circuits. QCLAB++ can be used for rapid prototyping and
@@ -9,30 +7,34 @@ discovery. QCLAB++ provides I/O through openQASM making it compatible with
 quantum hardware.
 
 
-## How to run? ##
+## How to run?
 
 The QCLAB++ package uses the CMake build system (CMake version ≥ 3.16).
-The recommended way of building QCLAB++ is as follows:
+The recommended way of building the QCLAB++ library is as follows:
 
-1. Install
+1.      Install
+        \code {.bash}
+        git clone ...
+        \endcode
 
-        git clone https://github.com/QuantumComputingLab/qclabpp.git
-
-2. CMake
-
+2.      CMake
+        \code {.bash}
         cd qclabpp
         mkdir build
         cd build
         cmake ..
         make -j8
+        \endcode
 
-3. Run tests
-
+3.      Run tests
+        \code {.bash}
         ./test/run
+        \endcode
 
-4. Generate documentation
-
+4.      Generate documentation
+        \code {.bash}
         doxygen doxygen.dox
+        \endcode
 
 
 ## Developers - Lawrence Berkeley National Laboratory
@@ -61,3 +63,6 @@ such, the U.S. Government has been granted for itself and others acting on
 its behalf a paid-up, nonexclusive, irrevocable, worldwide license in the
 Software to reproduce, distribute copies to the public, prepare derivative
 works, and perform publicly and display publicly, and to permit others to do so.
+
+*/
+
