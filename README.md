@@ -1,6 +1,6 @@
 # QCLAB++
 
-<p align="center"><img src="doc/doxygen/images/logo.png?raw=true" /></p>
+<p align="center"><img src="doc/doxygen/images/logo200x200.png?raw=true" /></p>
 
 QCLAB++ is an object-oriented, fully templated C++ package for creating and
 representing quantum circuits. QCLAB++ can be used for rapid prototyping and
