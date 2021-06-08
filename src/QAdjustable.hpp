@@ -18,9 +18,9 @@ namespace qclab {
   {
 
     public:
-      /// Constructs a quantum adjustable object with the given flag `flag`.
-      QAdjustable( const bool flag = false )
-      : fixed_( flag )
+      /// Constructs a quantum adjustable object with the given flag `fixed`.
+      QAdjustable( const bool fixed = false )
+      : fixed_( fixed )
       { } // QAdjustable
 
       /// Checks if this quantum adjustable object is fixed.

@@ -7,15 +7,19 @@ void test_qclab_dense_memory() {
 
   // alloc_unique_array
   std::unique_ptr< T[] >  alloc1 = qclab::dense::alloc_unique_array< T >( 1 ) ;
-  EXPECT_EQ( alloc1[0] , alloc1[0] ) ;
+  alloc1[0] = T(5) ;
+  EXPECT_EQ( alloc1[0] , T(5) ) ;
 
   std::unique_ptr< T[] >  alloc2 = qclab::dense::alloc_unique_array< T >( 2 ) ;
-  EXPECT_EQ( alloc2[0] , alloc2[0] ) ;
-  EXPECT_EQ( alloc2[1] , alloc2[1] ) ;
+  alloc2[0] = T(5) ;
+  alloc2[1] = T(6) ;
+  EXPECT_EQ( alloc2[0] , T(5) ) ;
+  EXPECT_EQ( alloc2[1] , T(6) ) ;
 
   std::unique_ptr< T[] >  alloc10 = qclab::dense::alloc_unique_array< T >( 10 );
   for ( int64_t i = 0; i < 1; i++ ) {
-    EXPECT_EQ( alloc10[i] , alloc10[i] ) ;
+    alloc10[i] = T(i) ;
+    EXPECT_EQ( alloc10[i] , T(i) ) ;
   }
 
   // init_unique_array (zero)

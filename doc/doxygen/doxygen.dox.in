@@ -885,6 +885,8 @@ INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/src/QObject.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationY.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationZ.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Phase.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Phase45.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Phase90.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/PointerGate1.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QGate2.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QRotationGate2.hpp \
@@ -892,8 +894,15 @@ INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/src/QObject.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationYY.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationZZ.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QControlledGate2.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CX.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CY.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CZ.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CNOT.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/SWAP.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/iSWAP.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CRotationX.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CRotationY.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CRotationZ.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CPhase.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/PointerGate2.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/doc/doxygen/pages/Overview.txt \

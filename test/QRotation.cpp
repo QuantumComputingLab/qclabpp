@@ -10,16 +10,9 @@ void test_qclab_QRotation() {
   {
     qclab::QRotation< T >  R ;
 
-    EXPECT_FALSE( R.fixed() ) ;         // fixed
-    EXPECT_EQ( R.cos() , 1.0 ) ;        // cos
-    EXPECT_EQ( R.sin() , 0.0 ) ;        // sin
-    EXPECT_EQ( R.theta() , 0.0 ) ;      // theta
-
-    // fixed
-    R.makeFixed() ;
-    EXPECT_TRUE( R.fixed() ) ;
-    R.makeVariable() ;
-    EXPECT_FALSE( R.fixed() ) ;
+    EXPECT_EQ( R.cos() , 1.0 ) ;    // cos
+    EXPECT_EQ( R.sin() , 0.0 ) ;    // sin
+    EXPECT_EQ( R.theta() , 0.0 ) ;  // theta
 
     // update(angle)
     qclab::QAngle< T >  new_angle( 0.5 ) ;
@@ -53,7 +46,6 @@ void test_qclab_QRotation() {
     qclab::QAngle< T > angle( pi/2 ) ;
     qclab::QRotation< T >  R( angle ) ;
 
-    EXPECT_FALSE( R.fixed() ) ;                        // fixed
     EXPECT_NEAR( R.theta() , pi , eps ) ;              // theta
     EXPECT_NEAR( R.cos() , std::cos( pi/2 ) , eps ) ;  // cos
     EXPECT_NEAR( R.sin() , std::sin( pi/2 ) , eps ) ;  // sin
@@ -61,9 +53,8 @@ void test_qclab_QRotation() {
 
   {
     qclab::QAngle< T > angle( pi/2 ) ;
-    qclab::QRotation< T >  R( angle , true ) ;
+    qclab::QRotation< T >  R( angle ) ;
 
-    EXPECT_TRUE( R.fixed() ) ;                         // fixed
     EXPECT_NEAR( R.theta() , pi , eps ) ;              // theta
     EXPECT_NEAR( R.cos() , std::cos( pi/2 ) , eps ) ;  // cos
     EXPECT_NEAR( R.sin() , std::sin( pi/2 ) , eps ) ;  // sin
@@ -72,16 +63,14 @@ void test_qclab_QRotation() {
   {
     qclab::QRotation< T >  R( pi/2 ) ;
 
-    EXPECT_FALSE( R.fixed() ) ;                        // fixed
     EXPECT_NEAR( R.theta() , pi/2 , eps ) ;            // theta
     EXPECT_NEAR( R.cos() , std::cos( pi/4 ) , eps ) ;  // cos
     EXPECT_NEAR( R.sin() , std::sin( pi/4 ) , eps ) ;  // sin
   }
 
   {
-    qclab::QRotation< T >  R( pi/2 , true ) ;
+    qclab::QRotation< T >  R( pi/2 ) ;
 
-    EXPECT_TRUE( R.fixed() ) ;                         // fixed
     EXPECT_NEAR( R.theta() , pi/2 , eps ) ;            // theta
     EXPECT_NEAR( R.cos() , std::cos( pi/4 ) , eps ) ;  // cos
     EXPECT_NEAR( R.sin() , std::sin( pi/4 ) , eps ) ;  // sin
@@ -92,7 +81,6 @@ void test_qclab_QRotation() {
     const T sin = std::sin( pi/4 ) ;
     qclab::QRotation< T >  R( cos , sin ) ;
 
-    EXPECT_FALSE( R.fixed() ) ;              // fixed
     EXPECT_NEAR( R.theta() , pi/2 , eps ) ;  // theta
     EXPECT_NEAR( R.cos() , cos , eps ) ;     // cos
     EXPECT_NEAR( R.sin() , sin , eps ) ;     // sin
@@ -101,12 +89,115 @@ void test_qclab_QRotation() {
   {
     const T cos = std::cos( pi/4 ) ;
     const T sin = std::sin( pi/4 ) ;
-    qclab::QRotation< T >  R( cos , sin , true ) ;
+    qclab::QRotation< T >  R( cos , sin ) ;
 
-    EXPECT_TRUE( R.fixed() ) ;               // fixed
     EXPECT_NEAR( R.theta() , pi/2 , eps ) ;  // theta
     EXPECT_NEAR( R.cos() , cos , eps ) ;     // cos
     EXPECT_NEAR( R.sin() , sin , eps ) ;     // sin
+  }
+
+  {
+    const T theta1 = pi/2 ;
+    const qclab::QAngle< T >  angle1( theta1 ) ;
+    qclab::QRotation< T >  R1( angle1 ) ;
+
+    const T theta2 = pi/3 ;
+    const qclab::QAngle< T >  angle2( theta2 ) ;
+    qclab::QRotation< T >  R2( angle2 ) ;
+
+    // operator *=
+    R1 *= R2 ;
+    qclab::QAngle< T >  angle = angle1 + angle2 ;
+    T cos   = angle.cos() ;
+    T sin   = angle.sin() ;
+    T theta = angle.theta() ;
+    EXPECT_NEAR( R1.cos() , cos , 10*eps ) ;                 // cos
+    EXPECT_NEAR( R1.sin() , sin , 10*eps ) ;                 // sin
+    EXPECT_NEAR( R1.theta() , 2*theta , 10*eps ) ;           // theta
+    EXPECT_NEAR( R2.cos() , std::cos( theta2 ) , 10*eps ) ;  // cos
+    EXPECT_NEAR( R2.sin() , std::sin( theta2 ) , 10*eps ) ;  // sin
+    EXPECT_NEAR( R2.theta() , 2*theta2 , 10*eps ) ;          // theta
+  }
+
+  {
+    const T theta1 = pi/2 ;
+    const qclab::QAngle< T >  angle1( theta1 ) ;
+    qclab::QRotation< T >  R1( angle1 ) ;
+
+    const T theta2 = pi/3 ;
+    const qclab::QAngle< T >  angle2( theta2 ) ;
+    qclab::QRotation< T >  R2( angle2 ) ;
+
+    // operator /=
+    R1 /= R2 ;
+    qclab::QAngle< T >  angle = angle1 - angle2 ;
+    T cos   = angle.cos() ;
+    T sin   = angle.sin() ;
+    T theta = angle.theta() ;
+    EXPECT_NEAR( R1.cos() , cos , 10*eps ) ;                 // cos
+    EXPECT_NEAR( R1.sin() , sin , 10*eps ) ;                 // sin
+    EXPECT_NEAR( R1.theta() , 2*theta , 10*eps ) ;           // theta
+    EXPECT_NEAR( R2.cos() , std::cos( theta2 ) , 10*eps ) ;  // cos
+    EXPECT_NEAR( R2.sin() , std::sin( theta2 ) , 10*eps ) ;  // sin
+    EXPECT_NEAR( R2.theta() , 2*theta2 , 10*eps ) ;          // theta
+  }
+
+  {
+    const T theta1 = pi/2 ;
+    const qclab::QAngle< T >  angle1( theta1 ) ;
+    qclab::QRotation< T >  R1( angle1 ) ;
+
+    const T theta2 = pi/3 ;
+    const qclab::QAngle< T >  angle2( theta2 ) ;
+    qclab::QRotation< T >  R2( angle2 ) ;
+
+    // operator *
+    qclab::QRotation< T > R = R1 * R2 ;
+    qclab::QAngle< T >  angle = angle1 + angle2 ;
+    T cos   = angle.cos() ;
+    T sin   = angle.sin() ;
+    T theta = angle.theta() ;
+    EXPECT_NEAR( R.cos() , cos , 10*eps ) ;        // cos
+    EXPECT_NEAR( R.sin() , sin , 10*eps ) ;        // sin
+    EXPECT_NEAR( R.theta() , 2*theta , 10*eps ) ;  // theta
+  }
+
+  {
+    const T theta1 = pi/2 ;
+    const qclab::QAngle< T >  angle1( theta1 ) ;
+    qclab::QRotation< T >  R1( angle1 ) ;
+
+    const T theta2 = pi/3 ;
+    const qclab::QAngle< T >  angle2( theta2 ) ;
+    qclab::QRotation< T >  R2( angle2 ) ;
+
+    // operator /
+    qclab::QRotation< T > R = R1 / R2 ;
+    qclab::QAngle< T >  angle = angle1 - angle2 ;
+    T cos   = angle.cos() ;
+    T sin   = angle.sin() ;
+    T theta = angle.theta() ;
+    EXPECT_NEAR( R.cos() , cos , 10*eps ) ;        // cos
+    EXPECT_NEAR( R.sin() , sin , 10*eps ) ;        // sin
+    EXPECT_NEAR( R.theta() , 2*theta , 10*eps ) ;  // theta
+  }
+
+  {
+    const T theta1 = pi/2 ;
+    const qclab::QAngle< T >  angle1( theta1 ) ;
+    qclab::QRotation< T >  R1( angle1 ) ;
+    T cos   = R1.cos() ;
+    T sin   = R1.sin() ;
+    T theta = R1.theta() ;
+
+    // inv
+    qclab::QRotation< T >  R2 = R1.inv() ;
+    EXPECT_NEAR( R1.cos() ,  cos , eps ) ;      // cos
+    EXPECT_NEAR( R2.cos() ,  cos , eps ) ;      // cos
+    EXPECT_NEAR( R1.sin() ,  sin , eps ) ;      // sin
+    EXPECT_NEAR( R2.sin() , -sin , eps ) ;      // sin
+    EXPECT_NEAR( R1.theta() ,  theta , eps ) ;  // theta
+    EXPECT_NEAR( R2.theta() , -theta , eps ) ;  // theta
   }
 
 }

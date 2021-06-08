@@ -4,6 +4,7 @@
 #define qclab_qgates_QRotationGate2_hpp
 
 #include "QGate2.hpp"
+#include "QAdjustable.hpp"
 #include "QRotation.hpp"
 #include <cassert>
 
@@ -16,8 +17,7 @@ namespace qclab {
      * \brief Base class for 2-qubit rotation gates.
      */
     template <typename T>
-    class QRotationGate2 : public QGate2< T > ,
-                           public QRotation< qclab::real_t< T > >
+    class QRotationGate2 : public QGate2< T > , public QAdjustable
     {
 
       public:
@@ -32,7 +32,8 @@ namespace qclab {
          */
         QRotationGate2()
         : qubits_( { 0 , 1 } )
-        , QRotation< real_type >()
+        , rotation_()
+        , QAdjustable()
         { } // QRotationGate2()
 
         /**
@@ -42,7 +43,8 @@ namespace qclab {
          */
         QRotationGate2( const int* qubits , const angle_type& angle ,
                         const bool fixed = false )
-        : QRotation< real_type >( angle , fixed )
+        : rotation_( angle )
+        , QAdjustable( fixed )
         {
           setQubits( qubits ) ;
         } // QRotationGate2(qubits,angle,fixed)
@@ -54,7 +56,8 @@ namespace qclab {
          */
         QRotationGate2( const int* qubits , const real_type theta ,
                         const bool fixed = false )
-        : QRotation< real_type >( theta , fixed )
+        : rotation_( theta )
+        , QAdjustable( fixed )
         {
           setQubits( qubits ) ;
         } // QRotationGate2(qubits,theta,fixed)
@@ -67,7 +70,8 @@ namespace qclab {
          */
         QRotationGate2( const int* qubits , const real_type cos ,
                         const real_type sin , const bool fixed = false )
-        : QRotation< real_type >( cos , sin , fixed )
+        : rotation_( cos , sin )
+        , QAdjustable( fixed )
         {
           setQubits( qubits ) ;
         } // QRotationGate2(qubits,cos,sin,fixed)
@@ -80,7 +84,8 @@ namespace qclab {
          */
         QRotationGate2( const int qubit0 , const int qubit1 ,
                         const angle_type& angle , const bool fixed = false )
-        : QRotation< real_type >( angle , fixed )
+        : rotation_( angle )
+        , QAdjustable( fixed )
         {
           const int qubits[] = { qubit0 , qubit1 } ;
           setQubits( &qubits[0] ) ;
@@ -93,7 +98,8 @@ namespace qclab {
          */
         QRotationGate2( const int qubit0 , const int qubit1 ,
                         const real_type theta , const bool fixed = false )
-        : QRotation< real_type >( theta , fixed )
+        : rotation_( theta )
+        , QAdjustable( fixed )
         {
           const int qubits[] = { qubit0 , qubit1 } ;
           setQubits( &qubits[0] ) ;
@@ -108,7 +114,8 @@ namespace qclab {
         QRotationGate2( const int qubit0 , const int qubit1 ,
                         const real_type cos , const real_type sin ,
                         const bool fixed = false )
-        : QRotation< real_type >( cos , sin , fixed )
+        : rotation_( cos , sin )
+        , QAdjustable( fixed )
         {
           const int qubits[] = { qubit0 , qubit1 } ;
           setQubits( &qubits[0] ) ;
@@ -117,9 +124,7 @@ namespace qclab {
         // nbQubits
 
         // fixed
-        inline bool fixed() const override {
-          return QRotation< real_type >::fixed() ;
-        }
+        inline bool fixed() const override { return QAdjustable::fixed() ; }
 
         // controlled
         inline bool controlled() const override { return false ; }
@@ -162,22 +167,50 @@ namespace qclab {
 
         // equals
 
-        // angle
+        /// Returns the quantum angle \f$\theta/2\f$ of this rotation gate.
+        inline const angle_type& angle() const { return rotation_.angle() ; }
 
-        // theta
+        /// Returns the numerical value \f$\theta\f$ of this rotation gate.
+        inline real_type theta() const { return rotation_.theta() ; }
 
-        // cos
+        /// Returns the cosine \f$\cos(\theta/2)\f$ of this rotation gate.
+        inline real_type cos() const { return rotation_.cos() ; }
 
-        // sin
+        /// Returns the sine \f$\sin(\theta/2)\f$ of this rotation gate.
+        inline real_type sin() const { return rotation_.sin() ; }
 
-        // update(angle)
+        /**
+         * \brief Updates this rotation gate with the given quantum angle
+         *        `angle` = \f$\theta/2\f$.
+         */
+        void update( const angle_type& angle ) {
+          assert( !fixed() ) ;
+          rotation_.update( angle ) ;
+        }
 
-        // update(theta)
+        /**
+         * \brief Updates this rotation gate with the given value
+         *        `theta` = \f$\theta\f$.
+         */
+        void update( const real_type theta ) {
+          assert( !fixed() ) ;
+          rotation_.update( theta ) ;
+        }
 
-        // update(cos,sin)
+        /**
+         * \brief Updates this rotation gate with the given values
+         *        `cos` = \f$\cos(\theta/2)\f$ and `sin` = \f$\sin(\theta/2)\f$.
+         */
+        void update( const real_type cos , const real_type sin ) {
+          assert( !fixed() ) ;
+          rotation_.update( cos , sin ) ;
+        }
 
       protected:
-        int  qubits_[2] ;  ///< Qubits of this 2-qubit rotation gate.
+        /// Qubits of this 2-qubit rotation gate.
+        int  qubits_[2] ;
+        /// Quantum rotation of this 2-qubit rotation gate.
+        QRotation< real_type >  rotation_ ;
 
     } ; // class QRotationGate2
 

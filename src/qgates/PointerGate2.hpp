@@ -62,8 +62,9 @@ namespace qclab {
 
         // apply
         void apply( Side side , Op op , const int nbQubits ,
-                    qclab::dense::SquareMatrix< T >& matrix ) const override {
-          gate_->apply( side , op , nbQubits , matrix ) ;
+                    qclab::dense::SquareMatrix< T >& matrix ,
+                    const int offset = 0 ) const override {
+          gate_->apply( side , op , nbQubits , matrix , offset_ + offset ) ;
         }
 
         // print

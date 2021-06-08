@@ -16,14 +16,23 @@ add_executable( run run.cpp
                     qgates/RotationY.cpp
                     qgates/RotationZ.cpp
                     qgates/Phase.cpp
+                    qgates/Phase45.cpp
+                    qgates/Phase90.cpp
                     qgates/PointerGate1.cpp
                     qgates/QGate2.cpp
                     qgates/RotationXX.cpp
                     qgates/RotationYY.cpp
                     qgates/RotationZZ.cpp
                     qgates/QControlledGate2.cpp
+                    qgates/CX.cpp
+                    qgates/CY.cpp
+                    qgates/CZ.cpp
                     qgates/CNOT.cpp
                     qgates/SWAP.cpp
+                    qgates/iSWAP.cpp
+                    qgates/CRotationX.cpp
+                    qgates/CRotationY.cpp
+                    qgates/CRotationZ.cpp
                     qgates/CPhase.cpp
                     qgates/PointerGate2.cpp
               )

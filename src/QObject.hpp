@@ -51,7 +51,8 @@ namespace qclab {
 
       /// Applies this quantum object to the given matrix.
       virtual void apply( Side side , Op op , const int size ,
-                          qclab::dense::SquareMatrix< T >& matrix ) const = 0 ;
+                          qclab::dense::SquareMatrix< T >& matrix ,
+                          const int offset = 0 ) const = 0 ;
 
       /// Prints this quantum object.
       virtual void print() const = 0 ;

@@ -44,12 +44,22 @@ namespace qclab {
       using const_reverse_iterator =
                                typename vector_type::const_reverse_iterator ;
 
-      /// Constructs a quantum circuit of `nbQubits`.
+      /// Constructs a quantum circuit of `nbQubits` starting at qubit 0.
       QCircuit( const int nbQubits )
       : nbQubits_( nbQubits )
+      , offset_( 0 )
       {
         assert( nbQubits > 0 ) ;
       } // QCircuit(nbQubits)
+
+      /// Constructs a quantum circuit of `nbQubits` starting at qubit `offset`.
+      QCircuit( const int nbQubits , const int offset )
+      : nbQubits_( nbQubits )
+      , offset_( offset )
+      {
+        assert( nbQubits > 0 ) ;
+        assert( offset >= 0 ) ;
+      } // QCircuit(nbQubits,offset)
 
       // nbQubits
       inline int nbQubits() const override { return nbQubits_ ; }
@@ -61,7 +71,7 @@ namespace qclab {
       inline bool controlled() const override { return false ; }
 
       // qubit
-      inline int qubit() const override { return 0 ; }
+      inline int qubit() const override { return offset_ ; }
 
       // setQubit
       inline void setQubit( const int qubit ) override { assert( false ) ; }
@@ -69,7 +79,7 @@ namespace qclab {
       // qubits
       std::vector< int > qubits() const override {
         std::vector< int > v( nbQubits_ ) ;
-        std::iota( v.begin() , v.end() , 0 ) ;
+        std::iota( v.begin() , v.end() , offset_ ) ;
         return v ;
       }
 
@@ -87,26 +97,32 @@ namespace qclab {
 
       // apply
       void apply( Side side , Op op , const int nbQubits ,
-                  qclab::dense::SquareMatrix< T >& matrix ) const override {
-        assert( nbQubits >= nbQubits_ ) ;
-        const int64_t n = 1 << nbQubits ;
-        assert( matrix.size() == n ) ;
-        // operation
-        qclab::dense::SquareMatrix< T >  mats = this->matrix() ;
-        qclab::dense::operateInPlace( op , mats ) ;
-        // kron( Ileft , mats , Iright )
-        qclab::dense::SquareMatrix< T >  matn( n ) ;
-        if ( nbQubits == nbQubits_ ) {
-          matn = mats ;
+                  qclab::dense::SquareMatrix< T >& matrix ,
+                  const int offset = 0 ) const override {
+        if ( op == Op::NoTrans ) {
+          if ( side == Side::Left ) {
+            // Left + NoTrans
+            for ( auto it = rbegin(); it != rend(); ++it ) {
+              (*it)->apply( side , op , nbQubits , matrix , offset_ + offset ) ;
+            }
+          } else {
+            // Right + NoTrans
+            for ( auto it = begin(); it != end(); ++it ) {
+              (*it)->apply( side , op , nbQubits , matrix , offset_ + offset ) ;
+            }
+          }
         } else {
-          auto Iright = qclab::dense::eye< T >( 1 << ( nbQubits - nbQubits_ ) ) ;
-          qclab::dense::kron( mats , Iright , matn ) ;
-        }
-        // side
-        if ( side == Side::Left ) {
-          matrix *= matn ;
-        } else {
-          matrix = matn * matrix ;
+          if ( side == Side::Left ) {
+            // Left + [Conj]Trans
+            for ( auto it = begin(); it != end(); ++it ) {
+              (*it)->apply( side , op , nbQubits , matrix , offset_ + offset ) ;
+            }
+          } else {
+            // Right + [Conj]Trans
+            for ( auto it = rbegin(); it != rend(); ++it ) {
+              (*it)->apply( side , op , nbQubits , matrix , offset_ + offset ) ;
+            }
+          }
         }
       }
 
@@ -118,7 +134,7 @@ namespace qclab {
       // toQASM
       int toQASM( std::ostream& stream , const int offset = 0 ) const override {
         for ( auto it = begin(); it != end(); ++it ) {
-          int out = (*it)->toQASM( stream , offset ) ;
+          int out = (*it)->toQASM( stream , offset_ + offset ) ;
           if ( out != 0 ) return out ;
         }
         return 0 ;
@@ -132,6 +148,12 @@ namespace qclab {
       inline bool equals( const QObject< T >& other ) const override {
         return ( other.matrix() == matrix() ) ;
       }
+
+      /// Returns the qubit offset of this quantum circuit.
+      int offset() const { return offset_ ; }
+
+      /// Sets the qubit offset of this quantum circuit.
+      void setOffset( const int offset ) { offset_ = offset ; }
 
       //
       // Element access
@@ -290,6 +312,8 @@ namespace qclab {
     protected:
       /// Number of qubits of this quantum circuit.
       int          nbQubits_ ;
+      /// Qubit offset of this quantum circuit.
+      int          offset_ ;
       /// Unique pointers to the gates of this quantum circuit.
       vector_type  gates_ ;
 

@@ -54,6 +54,32 @@ void test_qclab_QCircuit() {
   }
 
   {
+    qclab::QCircuit< T >  circuit( 3 , 5 ) ;
+
+    EXPECT_EQ( circuit.nbQubits() , 3 ) ;     // nbQubits
+    EXPECT_FALSE( circuit.fixed() ) ;         // fixed
+    EXPECT_FALSE( circuit.controlled() ) ;    // controlled
+
+    // qubit(s)
+    EXPECT_EQ( circuit.qubit() , 5 ) ;
+    EXPECT_EQ( circuit.qubits().size() , 3 ) ;
+    EXPECT_EQ( circuit.qubits()[0] , 5 ) ;
+    EXPECT_EQ( circuit.qubits()[1] , 6 ) ;
+    EXPECT_EQ( circuit.qubits()[2] , 7 ) ;
+
+    // offset
+    EXPECT_EQ( circuit.offset() , 5 ) ;
+    circuit.setOffset( 2 ) ;
+    EXPECT_EQ( circuit.offset() , 2 ) ;
+
+    EXPECT_EQ( circuit.qubit() , 2 ) ;
+    EXPECT_EQ( circuit.qubits().size() , 3 ) ;
+    EXPECT_EQ( circuit.qubits()[0] , 2 ) ;
+    EXPECT_EQ( circuit.qubits()[1] , 3 ) ;
+    EXPECT_EQ( circuit.qubits()[2] , 4 ) ;
+  }
+
+  {
     qclab::QCircuit< T , qclab::qgates::QGate1< T > >  circuit( 3 ) ;
 
     EXPECT_EQ( circuit.nbQubits() , 3 ) ;     // nbQubits
@@ -129,10 +155,34 @@ void test_qclab_QCircuit() {
     auto mat1 = I1 ;
     circuit1.apply( qclab::Side::Left , qclab::Op::NoTrans , 1 , mat1 ) ;
     EXPECT_EQ( mat1 , mat ) ;
+    mat1 = I1 ;
+    circuit1.apply( qclab::Side::Right , qclab::Op::NoTrans , 1 , mat1 ) ;
+    EXPECT_EQ( mat1 , mat ) ;
 
     // apply (nbQubits = 2)
     auto mat2 = I2 ;
     circuit1.apply( qclab::Side::Left , qclab::Op::NoTrans , 2 , mat2 ) ;
+    EXPECT_EQ( mat2 , qclab::dense::kron( mat , I1 ) ) ;
+    mat2 = I2 ;
+    circuit1.apply( qclab::Side::Right , qclab::Op::NoTrans , 2 , mat2 ) ;
+    EXPECT_EQ( mat2 , qclab::dense::kron( mat , I1 ) ) ;
+
+    qclab::dense::conjTransInPlace( mat ) ;
+
+    // apply ConjTrans (nbQubits = 1)
+    mat1 = I1 ;
+    circuit1.apply( qclab::Side::Left , qclab::Op::ConjTrans , 1 , mat1 ) ;
+    EXPECT_EQ( mat1 , mat ) ;
+    mat1 = I1 ;
+    circuit1.apply( qclab::Side::Right , qclab::Op::ConjTrans , 1 , mat1 ) ;
+    EXPECT_EQ( mat1 , mat ) ;
+
+    // apply ConjTrans (nbQubits = 2)
+    mat2 = I2 ;
+    circuit1.apply( qclab::Side::Left , qclab::Op::ConjTrans , 2 , mat2 ) ;
+    EXPECT_EQ( mat2 , qclab::dense::kron( mat , I1 ) ) ;
+    mat2 = I2 ;
+    circuit1.apply( qclab::Side::Right , qclab::Op::ConjTrans , 2 , mat2 ) ;
     EXPECT_EQ( mat2 , qclab::dense::kron( mat , I1 ) ) ;
   }
 

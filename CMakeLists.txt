@@ -1,7 +1,7 @@
 cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 
 # project
-project( QCLABPP VERSION 0.1.0 LANGUAGES CXX )
+project( QCLABPP VERSION 0.1.1 LANGUAGES CXX )
 set( CMAKE_CXX_STANDARD 14 )
 
 # openmp

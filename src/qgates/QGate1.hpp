@@ -68,34 +68,58 @@ namespace qclab {
 
         // apply
         void apply( Side side , Op op , const int nbQubits ,
-                    qclab::dense::SquareMatrix< T >& matrix ) const override {
+                    qclab::dense::SquareMatrix< T >& matrix ,
+                    const int offset = 0 ) const override {
           assert( nbQubits >= 1 ) ;
           assert( matrix.size() == 1 << nbQubits ) ;
-          const int qubit = this->qubit() ;  assert( qubit < nbQubits ) ;
+          const int qubit = this->qubit() + offset ;
+          assert( qubit < nbQubits ) ;
           // operation
           qclab::dense::SquareMatrix< T >  mat1 = this->matrix() ;
           qclab::dense::operateInPlace( op , mat1 ) ;
-          // kron( Ileft , mat1 , Iright )
-          qclab::dense::SquareMatrix< T >  matn( 1 << nbQubits ) ;
-          if ( nbQubits == 1 ) {
-            matn = mat1 ;
-          } else if ( qubit == 0 ) {
-            auto Iright = qclab::dense::eye< T >( 1 << ( nbQubits - 1 ) ) ;
-            qclab::dense::kron( mat1 , Iright , matn ) ;
-          } else if ( qubit == nbQubits - 1 ) {
-            auto Ileft = qclab::dense::eye< T >( 1 << ( nbQubits - 1 ) ) ;
-            qclab::dense::kron( Ileft , mat1 , matn ) ;
-          } else {
-            auto Ileft  = qclab::dense::eye< T >( 1 << qubit ) ;
-            auto Iright = qclab::dense::eye< T >( 1 << ( nbQubits - qubit - 1));
-            auto tmp = qclab::dense::kron( Ileft , mat1 ) ;
-            qclab::dense::kron( tmp , Iright , matn ) ;
-          }
           // side
           if ( side == Side::Left ) {
-            matrix *= matn ;
+            if ( nbQubits == 1 ) {
+              matrix *= mat1 ;
+            } else {
+              // matrix *= kron( Ileft , mat1 , Iright )
+              const int64_t nLeft  = 1 << qubit ;
+              const int64_t nRight = 1 << ( nbQubits - qubit - 1 ) ;
+              #pragma omp parallel for
+              for ( int64_t i = 0; i < matrix.rows(); i++ ) {
+                for ( int64_t k = 0; k < nLeft; k++ ) {
+                  for ( int64_t j = 0; j < nRight; j++ ) {
+                    const int64_t j1 = j + 2 * k * nRight ;
+                    const int64_t j2 = j1 + nRight ;
+                    const T x1 = matrix(i,j1) ;
+                    const T x2 = matrix(i,j2) ;
+                    matrix(i,j1) = mat1(0,0) * x1 + mat1(1,0) * x2 ;
+                    matrix(i,j2) = mat1(0,1) * x1 + mat1(1,1) * x2 ;
+                  }
+                }
+              }
+            }
           } else {
-            matrix = matn * matrix ;
+            if ( nbQubits == 1 ) {
+              matrix = mat1 * matrix ;
+            } else {
+              // matrix = kron( Ileft , mat1 , Iright ) * matrix
+              const int64_t nLeft  = 1 << qubit ;
+              const int64_t nRight = 1 << ( nbQubits - qubit - 1 ) ;
+              #pragma omp parallel for
+              for ( int64_t j = 0; j < matrix.cols(); j++ ) {
+                for ( int64_t k = 0; k < nLeft; k++ ) {
+                  for ( int64_t i = 0; i < nRight; i++ ) {
+                    const int64_t i1 = i + 2 * k * nRight ;
+                    const int64_t i2 = i1 + nRight ;
+                    const T x1 = matrix(i1,j) ;
+                    const T x2 = matrix(i2,j) ;
+                    matrix(i1,j) = mat1(0,0) * x1 + mat1(0,1) * x2 ;
+                    matrix(i2,j) = mat1(1,0) * x1 + mat1(1,1) * x2 ;
+                  }
+                }
+              }
+            }
           }
         }
 

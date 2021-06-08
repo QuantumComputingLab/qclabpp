@@ -149,7 +149,7 @@ namespace qclab {
           return !( *this == other ) ;
         }
 
-        /// Adds `other` to this square matrix.
+        /// Adds `rhs` to this square matrix.
         inline SquareMatrix< T >& operator+=( const SquareMatrix< T >& rhs ) {
           assert( rhs.size() == size_ ) ;
           #pragma omp parallel for
@@ -161,7 +161,7 @@ namespace qclab {
           return *this ;
         }
 
-        /// Substracts `other` from this square matrix.
+        /// Substracts `rhs` from this square matrix.
         inline SquareMatrix< T >& operator-=( const SquareMatrix< T >& rhs ) {
           assert( rhs.size() == size_ ) ;
           #pragma omp parallel for
@@ -173,7 +173,7 @@ namespace qclab {
           return *this ;
         }
 
-        /// Multiplies `other` to the right of this square matrix.
+        /// Multiplies `rhs` to the right of this square matrix.
         inline SquareMatrix< T >& operator*=( const SquareMatrix< T >& rhs ) {
           assert( size_ == rhs.size() ) ;
           auto new_data = init_unique_array< T >( size_ * size_ ) ;

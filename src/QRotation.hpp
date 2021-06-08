@@ -4,20 +4,19 @@
 #define qclab_QRotation_hpp
 
 #include "QAngle.hpp"
-#include "QAdjustable.hpp"
 #include <cassert>
 
 namespace qclab {
 
   /**
    * \class QRotation
-   * \brief Class for representing an adjustable quantum rotation.
+   * \brief Class for representing a quantum rotation.
    *
    * This class stores the quantum angle \f$\theta/2\f$, i.e., the cosine and
-   * sine of half the adjustable quantum rotation parameter \f$\theta\f$.
+   * sine of half the quantum rotation parameter \f$\theta\f$.
    */
   template <typename T>
-  class QRotation : public QAdjustable
+  class QRotation
   {
 
     public:
@@ -25,46 +24,36 @@ namespace qclab {
       using angle_type = QAngle< T > ;
 
       /**
-       * \brief Default constructor. Constructs an adjustable quantum rotation
-       *        with angle \f$\theta = 0\f$.
+       * \brief Default constructor. Constructs a aquantum rotation with angle
+       *        \f$\theta = 0\f$.
        */
       QRotation()
       : angle_( 0 )
-      , QAdjustable( false )
       { } // QRotation()
 
       /**
-       * \brief Constructs an adjustable quantum rotation with the given
-       *        quantum angle `angle` = \f$\theta/2\f$ and the flag `fixed`.
-       *        The default value of `fixed` is false.
+       * \brief Constructs a quantum rotation with the given quantum angle
+       *        `angle` = \f$\theta/2\f$.
        */
-      QRotation( const angle_type& angle , const bool fixed = false )
+      QRotation( const angle_type& angle )
       : angle_( angle )
-      , QAdjustable( fixed )
-      { } // QRotation(angle,fixed)
+      { } // QRotation(angle)
 
       /**
-       * \brief Constructs an adjustable quantum rotation with the given
-       *        value `theta` = \f$\theta\f$ and the flag `fixed`.
-       *        The default value of `fixed` is false.
+       * \brief Constructs a quantum rotation with the given value
+       *        `theta` = \f$\theta\f$.
        */
-      QRotation( const T theta , const bool fixed = false )
+      QRotation( const T theta )
       : angle_( theta/2 )
-      , QAdjustable( fixed )
-      { } // QRotation(theta,fixed)
+      { } // QRotation(theta)
 
       /**
-       * \brief Constructs an adjustable quantum rotation with the given values
-       *        `cos` = \f$\cos(\theta/2)\f$ and `sin` = \f$\sin(\theta/2)\f$
-       *        and the flag `fixed`. The default value of `fixed` is false.
+       * \brief Constructs a quantum rotation with the given values
+       *        `cos` = \f$\cos(\theta/2)\f$ and `sin` = \f$\sin(\theta/2)\f$.
        */
-      QRotation( const T cos , const T sin , const bool fixed = false )
+      QRotation( const T cos , const T sin )
       : angle_( cos , sin )
-      , QAdjustable( fixed )
-      { } // QRotation(cos,sin,fixed)
-
-      /// Checks if this quantum rotation is fixed.
-      inline bool fixed() const { return QAdjustable::fixed() ; }
+      { } // QRotation(cos,sin)
 
       /// Returns the quantum angle \f$\theta/2\f$ of this quantum rotation.
       inline const angle_type& angle() const { return angle_ ; }
@@ -83,7 +72,6 @@ namespace qclab {
        *        `angle` = \f$\theta/2\f$.
        */
       void update( const angle_type& angle ) {
-        assert( !fixed() ) ;
         angle_.update( angle ) ;
       }
 
@@ -92,7 +80,6 @@ namespace qclab {
        *        `theta` = \f$\theta\f$.
        */
       void update( const T theta ) {
-        assert( !fixed() ) ;
         angle_.update( theta/2 ) ;
       }
 
@@ -101,7 +88,6 @@ namespace qclab {
        *        `cos` = \f$\cos(\theta/2)\f$ and `sin` = \f$\sin(\theta/2)\f$.
        */
       void update( const T cos , const T sin ) {
-        assert( !fixed() ) ;
         angle_.update( cos , sin ) ;
       }
 
@@ -113,6 +99,38 @@ namespace qclab {
       /// Checks if `other` is different from this quantum rotation.
       inline bool operator!=( const QRotation< T >& other ) const {
         return other.angle() != angle_ ;
+      }
+
+      /// Multiplies `rhs` to this quantum rotation.
+      inline QRotation< T >& operator*=( const QRotation< T >& rhs ) {
+        update( angle_ + rhs.angle() ) ;
+        return *this ;
+      }
+
+      /// Multiplies the inverse of `rhs` to this quantum rotation.
+      inline QRotation< T >& operator/=( const QRotation< T >& rhs ) {
+        update( angle_ - rhs.angle() ) ;
+        return *this ;
+      }
+
+      /// Multiplies 2 quantum rotations.
+      friend QRotation< T > operator*( QRotation< T > lhs ,
+                                       const QRotation< T >& rhs ) {
+        lhs *= rhs ;
+        return lhs ;
+      }
+
+      /// Multiplies `lhs` and the inverse of `rhs`.
+      friend QRotation< T > operator/( QRotation< T > lhs ,
+                                       const QRotation< T >& rhs ) {
+        lhs /= rhs ;
+        return lhs ;
+      }
+
+      /// Returns the inverse this quantum rotation.
+      inline QRotation< T > inv() const {
+        QRotation< T > rotation( -angle_ ) ;
+        return rotation ;
       }
 
     protected:

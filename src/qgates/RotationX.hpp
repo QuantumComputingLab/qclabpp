@@ -147,6 +147,38 @@ namespace qclab {
 
         // update(cos,sin)
 
+        /// Multiplies `rhs` to this 1-qubit X-rotation gate.
+        inline RotationX< T >& operator*=( const RotationX< T >& rhs ) {
+          this->update( this->angle() + rhs.angle() ) ;
+          return *this ;
+        }
+
+        /// Multiplies the inverse of `rhs` to this 1-qubit X-rotation gate.
+        inline RotationX< T >& operator/=( const RotationX< T >& rhs ) {
+          this->update( this->angle() - rhs.angle() ) ;
+          return *this ;
+        }
+
+        /// Multiplies `lhs` and `rhs`.
+        friend RotationX< T > operator*( RotationX< T > lhs ,
+                                         const RotationX< T >& rhs ) {
+          lhs *= rhs ;
+          return lhs ;
+        }
+
+        /// Multiplies `lhs` and the inverse of `rhs`.
+        friend RotationX< T > operator/( RotationX< T > lhs ,
+                                         const RotationX< T >& rhs ) {
+          lhs /= rhs ;
+          return lhs ;
+        }
+
+        /// Returns the inverse this 1-qubit X-rotation gate.
+        inline RotationX< T > inv() const {
+          RotationX< T > rotation( -this->angle() ) ;
+          return rotation ;
+        }
+
     } ; // class RotationX
 
   } // namespace qgates

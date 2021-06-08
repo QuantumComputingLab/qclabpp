@@ -40,7 +40,7 @@ namespace qclab {
       , sin_( sin )
       {
         const T eps = std::numeric_limits< T >::epsilon() ;
-        assert( cos * cos + sin * sin - T(1) < 10*eps ) ;
+        assert( std::abs( cos * cos + sin * sin - T(1) ) < 10*eps ) ;
       } // QAngle(cos,sin)
 
       /// Returns the numerical value \f$\theta\f$ of this quantum angle.
@@ -67,7 +67,7 @@ namespace qclab {
       /// Updates this quantum angle with the given `cos` and `sin` values.
       void update( const T cos , const T sin ) {
         const T eps = std::numeric_limits< T >::epsilon() ;
-        assert( cos * cos + sin * sin - T(1) < 10*eps ) ;
+        assert( std::abs( cos * cos + sin * sin - T(1) ) < 10*eps ) ;
         cos_ = cos ;
         sin_ = sin ;
       }
@@ -80,6 +80,40 @@ namespace qclab {
       /// Checks if `other` is different from this quantum angle.
       inline bool operator!=( const QAngle< T >& other ) const {
         return ( ( other.cos() != cos_ ) || ( other.sin() != sin_ ) ) ;
+      }
+
+      /// Adds `rhs` to this quantum angle.
+      inline QAngle< T >& operator+=( const QAngle< T >& rhs ) {
+        const T cos = cos_ * rhs.cos() - sin_ * rhs.sin() ;
+        const T sin = sin_ * rhs.cos() + cos_ * rhs.sin() ;
+        cos_ = cos ;
+        sin_ = sin ;
+        return *this ;
+      }
+
+      /// Substracts `rhs` to this quantum angle.
+      inline QAngle< T >& operator-=( const QAngle< T >& rhs ) {
+        update( cos_ * rhs.cos() + sin_ * rhs.sin() ,
+                sin_ * rhs.cos() - cos_ * rhs.sin() ) ;
+        return *this ;
+      }
+
+      /// Adds 2 quantum angles.
+      friend QAngle< T > operator+( QAngle< T > lhs , const QAngle< T >& rhs ) {
+        lhs += rhs ;
+        return lhs ;
+      }
+
+      /// Substracts 2 quantum angles.
+      friend QAngle< T > operator-( QAngle< T > lhs , const QAngle< T >& rhs ) {
+        lhs -= rhs ;
+        return lhs ;
+      }
+
+      /// Returns the negation of this quantum angle.
+      inline QAngle< T > operator-() const {
+        QAngle< T > angle( cos_ , -sin_ ) ;
+        return angle ;
       }
 
     protected:

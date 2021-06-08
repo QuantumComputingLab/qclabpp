@@ -85,6 +85,101 @@ void test_qclab_QAngle() {
     EXPECT_NEAR( angle.theta() , theta , eps ) ;  // theta
   }
 
+  {
+    const T theta1 = pi/2 ;
+    const T cos1 = std::cos( theta1 ) ;
+    const T sin1 = std::sin( theta1 ) ;
+    qclab::QAngle< T >  angle1( theta1 ) ;
+
+    const T theta2 = pi/3 ;
+    const T cos2 = std::cos( theta2 ) ;
+    const T sin2 = std::sin( theta2 ) ;
+    qclab::QAngle< T >  angle2( theta2 ) ;
+
+    // operator +=
+    angle1 += angle2 ;
+    T theta = theta1 + theta2 ;
+    T cos = std::cos( theta ) ;
+    T sin = std::sin( theta ) ;
+    EXPECT_NEAR( angle1.cos() , cos , 10*eps ) ;       // cos
+    EXPECT_NEAR( angle1.sin() , sin , 10*eps ) ;       // sin
+    EXPECT_NEAR( angle1.theta() , theta , 10*eps ) ;   // theta
+    EXPECT_NEAR( angle2.cos() , cos2 , 10*eps ) ;      // cos
+    EXPECT_NEAR( angle2.sin() , sin2 , 10*eps ) ;      // sin
+    EXPECT_NEAR( angle2.theta() , theta2 , 10*eps ) ;  // theta
+  }
+
+  {
+    const T theta1 = pi/2 ;
+    const T cos1 = std::cos( theta1 ) ;
+    const T sin1 = std::sin( theta1 ) ;
+    qclab::QAngle< T >  angle1( theta1 ) ;
+
+    const T theta2 = pi/3 ;
+    const T cos2 = std::cos( theta2 ) ;
+    const T sin2 = std::sin( theta2 ) ;
+    qclab::QAngle< T >  angle2( theta2 ) ;
+
+    // operator -=
+    angle1 -= angle2 ;
+    T theta = theta1 - theta2 ;
+    T cos = std::cos( theta ) ;
+    T sin = std::sin( theta ) ;
+    EXPECT_NEAR( angle1.cos() , cos , 10*eps ) ;       // cos
+    EXPECT_NEAR( angle1.sin() , sin , 10*eps ) ;       // sin
+    EXPECT_NEAR( angle1.theta() , theta , 10*eps ) ;   // theta
+    EXPECT_NEAR( angle2.cos() , cos2 , 10*eps ) ;      // cos
+    EXPECT_NEAR( angle2.sin() , sin2 , 10*eps ) ;      // sin
+    EXPECT_NEAR( angle2.theta() , theta2 , 10*eps ) ;  // theta
+  }
+
+  {
+    const T theta1 = pi/2 ;
+    const T cos1 = std::cos( theta1 ) ;
+    const T sin1 = std::sin( theta1 ) ;
+    qclab::QAngle< T >  angle1( theta1 ) ;
+
+    const T theta2 = pi/3 ;
+    const T cos2 = std::cos( theta2 ) ;
+    const T sin2 = std::sin( theta2 ) ;
+    qclab::QAngle< T >  angle2( theta2 ) ;
+
+    // operator +
+    qclab::QAngle< T > sum = angle1 + angle2 ;
+    T theta = theta1 + theta2 ;
+    T cos = std::cos( theta ) ;
+    T sin = std::sin( theta ) ;
+    EXPECT_NEAR( sum.cos() , cos , 10*eps ) ;      // cos
+    EXPECT_NEAR( sum.sin() , sin , 10*eps ) ;      // sin
+    EXPECT_NEAR( sum.theta() , theta , 10*eps ) ;  // theta
+
+    // operator -
+    qclab::QAngle< T > minus = angle1 - angle2 ;
+    theta = theta1 - theta2 ;
+    cos = std::cos( theta ) ;
+    sin = std::sin( theta ) ;
+    EXPECT_NEAR( minus.cos() , cos , 10*eps ) ;      // cos
+    EXPECT_NEAR( minus.sin() , sin , 10*eps ) ;      // sin
+    EXPECT_NEAR( minus.theta() , theta , 10*eps ) ;  // theta
+  }
+
+  {
+    const T theta = 1 ;
+    const T cos = std::cos( theta ) ;
+    const T sin = std::sin( theta ) ;
+    qclab::QAngle< T >  angle1( theta ) ;
+    qclab::QAngle< T >  angle2 ;
+
+    // operator -
+    angle2 = -angle1 ;
+    EXPECT_NEAR( angle1.cos() ,  cos , eps ) ;      // cos
+    EXPECT_NEAR( angle1.sin() , sin , eps ) ;       // sin
+    EXPECT_NEAR( angle1.theta() , theta , eps ) ;   // theta
+    EXPECT_NEAR( angle2.cos() ,  cos , eps ) ;      // cos
+    EXPECT_NEAR( angle2.sin() , -sin , eps ) ;      // sin
+    EXPECT_NEAR( angle2.theta() , -theta , eps ) ;  // theta
+  }
+
 }
 
 

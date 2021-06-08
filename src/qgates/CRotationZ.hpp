@@ -1,10 +1,10 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_qgates_CPhase_hpp
-#define qclab_qgates_CPhase_hpp
+#ifndef qclab_qgates_CRotationZ_hpp
+#define qclab_qgates_CRotationZ_hpp
 
 #include "QControlledGate2.hpp"
-#include "Phase.hpp"
+#include "RotationZ.hpp"
 #include <cassert>
 
 namespace qclab {
@@ -12,76 +12,77 @@ namespace qclab {
   namespace qgates {
 
     /**
-     * \class CPhase
-     * \brief Controlled phase gate.
+     * \class CRotationZ
+     * \brief Controlled Z-rotation gate.
      */
     template <typename T>
-    class CPhase : public QControlledGate2< T >
+    class CRotationZ : public QControlledGate2< T >
     {
 
       public:
-        /// Real value type of this controlled phase gate.
+        /// Real value type of this controlled Z-rotation gate.
         using real_type = qclab::real_t< T > ;
-        /// Quantum angle type of this controlled phase gate.
+        /// Quantum angle type of this controlled Z-rotation gate.
         using angle_type = qclab::QAngle< real_type > ;
         /// Gate type of the controlled 1-qubit gate of this 2-qubit gate.
-        using gate_type = Phase< T > ;
+        using gate_type = RotationZ< T > ;
 
         /**
-         * \brief Default constructor. Constructs a controlled phase gate with
-         *        control qubit 0, target qubit 1, and parameter
+         * \brief Default constructor. Constructs a controlled Z-rotation gate
+         *        with control qubit 0, target qubit 1, and parameter
          *        \f$\theta = 0\f$.
          */
-        CPhase()
+        CRotationZ()
         : QControlledGate2< T >( 0 )
-        , gate_( std::make_unique< Phase< T > >( 1 , 0. ) )
-        { } // CPhase()
+        , gate_( std::make_unique< RotationZ< T > >( 1 , 0. ) )
+        { } // CRotationZ()
 
         /**
-         * \brief Constructs a controlled phase gate with given control qubit
-         *        `control`, target qubit `target`, quantum angle `angle` =
-         *        \f$\theta\f$, and control state `controlState`.
+         * \brief Constructs a controlled Z-rotation gate with given control
+         *        qubit `control`, target qubit `target`, quantum angle
+         *        `angle` = \f$\theta/2\f$, and control state `controlState`.
          *        The default control state is 1.
          */
-        CPhase( const int control , const int target , const angle_type& angle ,
-                const int controlState = 1 )
+        CRotationZ( const int control , const int target ,
+                    const angle_type& angle , const int controlState = 1 )
         : QControlledGate2< T >( control , controlState )
-        , gate_( std::make_unique< Phase< T > >( target , angle ) )
+        , gate_( std::make_unique< RotationZ< T > >( target , angle ) )
         {
           assert( control >= 0 ) ; assert( target >= 0 ) ;
           assert( control != target ) ;
-        } // CPhase(control,target,angle,controlState)
+        } // CRotationZ(control,target,angle,controlState)
 
         /**
-         * \brief Constructs a controlled phase gate with given control qubit
-         *        `control`, target qubit `target`, value `theta` =
+         * \brief Constructs a controlled Z-rotation gate with given control
+         *        qubit `control`, target qubit `target`, value `theta` =
          *        \f$\theta\f$, and control state `controlState`.
          *        The default control state is 1.
          */
-        CPhase( const int control , const int target , const real_type theta ,
-                const int controlState = 1 )
+        CRotationZ( const int control , const int target ,
+                    const real_type theta , const int controlState = 1 )
         : QControlledGate2< T >( control , controlState )
-        , gate_( std::make_unique< Phase< T > >( target , theta ) )
+        , gate_( std::make_unique< RotationZ< T > >( target , theta ) )
         {
           assert( control >= 0 ) ; assert( target >= 0 ) ;
           assert( control != target ) ;
-        } // CPhase(control,target,theta,controlState)
+        } // CRotationZ(control,target,theta,controlState)
 
         /**
-         * \brief Constructs a controlled phase gate with given control
+         * \brief Constructs a controlled Z-rotation gate with given control
          *        qubit `control`, target qubit `target`, values
-         *        `cos` = \f$\cos(\theta)\f$ and `sin` = \f$\sin(\theta)\f$, and
-         *        control state `controlState`. The default control state is 1.
+         *        `cos` = \f$\cos(\theta/2)\f$ and `sin` = \f$\sin(\theta/2)\f$,
+         *        and control state `controlState`.
+         *        The default control state is 1.
          */
-        CPhase( const int control , const int target ,
-                const real_type cos , real_type sin ,
-                const int controlState = 1 )
+        CRotationZ( const int control , const int target ,
+                    const real_type cos , real_type sin ,
+                    const int controlState = 1 )
         : QControlledGate2< T >( control , controlState )
-        , gate_( std::make_unique< Phase< T > >( target , cos , sin ) )
+        , gate_( std::make_unique< RotationZ< T > >( target , cos , sin ) )
         {
           assert( control >= 0 ) ; assert( target >= 0 ) ;
           assert( control != target ) ;
-        } // CPhase(control,target,cos,sin,controlState)
+        } // CRotationZ(control,target,cos,sin,controlState)
 
         // nbQubits
 
@@ -113,8 +114,8 @@ namespace qclab {
           if ( this->controlState() == 0 ) {
             stream << qasmX( this->control() + offset ) ;
           }
-          stream << qasmCPhase( this->control() + offset ,
-                                this->target()  + offset , theta() ) ;
+          stream << qasmCRz( this->control() + offset ,
+                             this->target()  + offset , theta() ) ;
           if ( this->controlState() == 0 ) {
             stream << qasmX( this->control() + offset ) ;
           }
@@ -127,8 +128,8 @@ namespace qclab {
 
         // equals
         inline bool equals( const QObject< T >& other ) const override {
-          using CP = CPhase< T > ;
-          if ( const CP* p = dynamic_cast< const CP* >( &other ) ) {
+          using CRZ = CRotationZ< T > ;
+          if ( const CRZ* p = dynamic_cast< const CRZ* >( &other ) ) {
             if ( p->angle() != this->angle() ) return false ;
             if ( p->controlState() != this->controlState() ) return false ;
             return ( ( p->control() < p->target() ) &&
@@ -159,15 +160,15 @@ namespace qclab {
 
         // setControlState
 
-        /// Makes this controlled phase gate fixed.
+        /// Makes this controlled Z-rotation gate fixed.
         inline void makeFixed() { gate_->makeFixed() ; }
 
-        /// Makes this controlled phase gate variable.
+        /// Makes this controlled Z-rotation gate variable.
         inline void makeVariable() { gate_->makeVariable() ; }
 
         /**
-         * \brief Returns the quantum angle \f$\theta\f$ of this controlled
-         *        phase gate.
+         * \brief Returns the quantum angle \f$\theta/2\f$ of this controlled
+         *        Z-rotation gate.
          */
         inline const angle_type& angle() const {
           return gate_->angle() ;
@@ -175,47 +176,56 @@ namespace qclab {
 
         /**
          * \brief Returns the numerical value \f$\theta\f$ of this controlled
-         *        phase gate.
+         *        Z-rotation gate.
          */
         inline real_type theta() const {
           return gate_->theta() ;
         }
 
-        /// Returns the cosine \f$\cos(\theta)\f$ of this controlled phase gate.
+        /**
+         * \brief Returns the cosine \f$\cos(\theta/2)\f$ of this controlled
+         *        Z-rotation gate.
+         */
         inline real_type cos() const {
           return gate_->cos() ;
         }
 
-        /// Returns the sine \f$\sin(\theta)\f$ of this controlled phase gate.
+        /**
+         * \brief Returns the sine \f$\sin(\theta/2)\f$ of this controlled
+         *        Z-rotation gate.
+         */
         inline real_type sin() const {
           return gate_->sin() ;
         }
 
         /**
-         * \brief Updates this controlled phase gate with the given quantum
-         *        angle `angle` = \f$\theta\f$.
+         * \brief Updates this controlled Z-rotation gate with the given quantum
+         *        angle `angle` = \f$\theta/2\f$.
          */
         void update( const angle_type& angle ) { gate_->update( angle ) ; }
 
         /**
-         * \brief Updates this controlled phase gate with the given value
+         * \brief Updates this controlled Z-rotation gate with the given value
          *        `theta` = \f$\theta\f$.
          */
         void update( const real_type theta ) { gate_->update( theta ) ; }
 
         /**
-         * \brief Updates this controlled phase gate with the given values
-         *        `cos` = \f$\cos(\theta)\f$ and `sin` = \f$\sin(\theta)\f$.
+         * \brief Updates this controlled Z-rotation gate with the given values
+         *        `cos` = \f$\cos(\theta/2)\f$ and `sin` = \f$\sin(\theta/2)\f$.
          */
         void update( const real_type cos , const real_type sin ) {
           gate_->update( cos , sin ) ;
         }
 
       protected:
-        /// Unique pointer to the phase gate of this controlled phase gate.
+        /**
+         * \brief Unique pointer to the Z-rotation gate of this controlled
+         *        Z-rotation gate.
+         */
         std::unique_ptr< gate_type >  gate_ ;
 
-    } ; // class CPhase
+    } ; // class CRotationZ
 
   } // namespace qgates
 

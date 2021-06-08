@@ -96,6 +96,12 @@ void test_qclab_qgates_CPhase() {
     EXPECT_TRUE(  cphase != cphase2 ) ;
     EXPECT_FALSE( cphase == cphase2 ) ;
 
+    // makeFixed, makeVariable
+    cphase.makeFixed() ;
+    EXPECT_TRUE( cphase.fixed() ) ;
+    cphase.makeVariable() ;
+    EXPECT_FALSE( cphase.fixed() ) ;
+
     // angle, theta, sin, cos
     qclab::QAngle< R > angle ;
     EXPECT_TRUE( cphase.angle() == angle ) ;

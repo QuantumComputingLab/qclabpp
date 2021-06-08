@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "qgates/CNOT.hpp"
 
-template <typename T>
+template <typename T, qclab::Side side>
 void test_qclab_qgates_QControlledGate2() {
 
   using R = qclab::real_t< T > ;
@@ -25,20 +25,20 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 2
     auto mat2 = I2 ;
-    cnot01.apply( qclab::Side::Right , qclab::Op::NoTrans , 2 , mat2 ) ;
+    cnot01.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot01.matrix() ) ;
 
     // nbQubits = 3
     auto mat3 = I3 ;
-    cnot01.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot01.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot01.matrix() , I1 ) ) ;
     mat3 = I3 ;
-    cnot12.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot12.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( I1 , cnot12.matrix() ) ) ;
 
     // nbQubits = 4
     auto mat4 = I4 ;
-    cnot12.apply( qclab::Side::Left , qclab::Op::NoTrans , 4 , mat4 ) ;
+    cnot12.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( cnot12.matrix() , I1 ) ) ) ;
 
@@ -54,7 +54,7 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 5
     auto mat5 = I5 ;
-    cnot13.apply( qclab::Side::Left , qclab::Op::NoTrans , 5 , mat5 ) ;
+    cnot13.apply( side , qclab::Op::NoTrans , 5 , mat5 ) ;
     EXPECT_TRUE( mat5 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( check , I1 ) ) ) ;
   }
@@ -67,20 +67,20 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 2
     auto mat2 = I2 ;
-    cnot10.apply( qclab::Side::Right , qclab::Op::NoTrans , 2 , mat2 ) ;
+    cnot10.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot10.matrix() ) ;
 
     // nbQubits = 3
     auto mat3 = I3 ;
-    cnot10.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot10.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot10.matrix() , I1 ) ) ;
     mat3 = I3 ;
-    cnot21.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot21.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( I1 , cnot21.matrix() ) ) ;
 
     // nbQubits = 4
     auto mat4 = I4 ;
-    cnot21.apply( qclab::Side::Left , qclab::Op::NoTrans , 4 , mat4 ) ;
+    cnot21.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( cnot21.matrix() , I1 ) ) ) ;
 
@@ -96,7 +96,7 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 5
     auto mat5 = I5 ;
-    cnot31.apply( qclab::Side::Left , qclab::Op::NoTrans , 5 , mat5 ) ;
+    cnot31.apply( side , qclab::Op::NoTrans , 5 , mat5 ) ;
     EXPECT_TRUE( mat5 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( check , I1 ) ) ) ;
   }
@@ -114,20 +114,20 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 2
     auto mat2 = I2 ;
-    cnot01.apply( qclab::Side::Right , qclab::Op::NoTrans , 2 , mat2 ) ;
+    cnot01.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot01.matrix() ) ;
 
     // nbQubits = 3
     auto mat3 = I3 ;
-    cnot01.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot01.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot01.matrix() , I1 ) ) ;
     mat3 = I3 ;
-    cnot12.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot12.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( I1 , cnot12.matrix() ) ) ;
 
     // nbQubits = 4
     auto mat4 = I4 ;
-    cnot12.apply( qclab::Side::Left , qclab::Op::NoTrans , 4 , mat4 ) ;
+    cnot12.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( cnot12.matrix() , I1 ) ) ) ;
 
@@ -143,7 +143,7 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 5
     auto mat5 = I5 ;
-    cnot13.apply( qclab::Side::Left , qclab::Op::NoTrans , 5 , mat5 ) ;
+    cnot13.apply( side , qclab::Op::NoTrans , 5 , mat5 ) ;
     EXPECT_TRUE( mat5 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( check , I1 ) ) ) ;
   }
@@ -156,20 +156,20 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 2
     auto mat2 = I2 ;
-    cnot10.apply( qclab::Side::Right , qclab::Op::NoTrans , 2 , mat2 ) ;
+    cnot10.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot10.matrix() ) ;
 
     // nbQubits = 3
     auto mat3 = I3 ;
-    cnot10.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot10.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot10.matrix() , I1 ) ) ;
     mat3 = I3 ;
-    cnot21.apply( qclab::Side::Left , qclab::Op::NoTrans , 3 , mat3 ) ;
+    cnot21.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( I1 , cnot21.matrix() ) ) ;
 
     // nbQubits = 4
     auto mat4 = I4 ;
-    cnot21.apply( qclab::Side::Left , qclab::Op::NoTrans , 4 , mat4 ) ;
+    cnot21.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( cnot21.matrix() , I1 ) ) ) ;
 
@@ -185,7 +185,7 @@ void test_qclab_qgates_QControlledGate2() {
 
     // nbQubits = 5
     auto mat5 = I5 ;
-    cnot31.apply( qclab::Side::Left , qclab::Op::NoTrans , 5 , mat5 ) ;
+    cnot31.apply( side , qclab::Op::NoTrans , 5 , mat5 ) ;
     EXPECT_TRUE( mat5 == qclab::dense::kron( I1 ,
                            qclab::dense::kron( check , I1 ) ) ) ;
   }
@@ -197,13 +197,19 @@ void test_qclab_qgates_QControlledGate2() {
  * complex float
  */
 TEST( qclab_qgates_QControlledGate2 , complex_float ) {
-  test_qclab_qgates_QControlledGate2< std::complex< float > >() ;
+  test_qclab_qgates_QControlledGate2< std::complex< float > ,
+                                      qclab::Side::Left >() ;
+  test_qclab_qgates_QControlledGate2< std::complex< float > ,
+                                      qclab::Side::Right >() ;
 }
 
 /*
  * complex double
  */
 TEST( qclab_qgates_QControlledGate2 , complex_double ) {
-  test_qclab_qgates_QControlledGate2< std::complex< double > >() ;
+  test_qclab_qgates_QControlledGate2< std::complex< double > ,
+                                      qclab::Side::Left >() ;
+  test_qclab_qgates_QControlledGate2< std::complex< double > ,
+                                      qclab::Side::Right >() ;
 }
 

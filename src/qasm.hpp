@@ -70,6 +70,12 @@ namespace qclab {
   /// Returns a qasm string for a Pauli-Z gate on the given qubit `qubit`.
   inline auto qasmZ( const int qubit ) { return qasm1( "z" , qubit ) ; }
 
+  /// Returns a qasm string for a S gate on the given qubit `qubit`.
+  inline auto qasmS( const int qubit ) { return qasm1( "s" , qubit ) ; }
+
+  /// Returns a qasm string for a T gate on the given qubit `qubit`.
+  inline auto qasmT( const int qubit ) { return qasm1( "t" , qubit ) ; }
+
 
   /**
    * \brief Returns a qasm string for a Rotation X gate on the given qubit
@@ -136,6 +142,57 @@ namespace qclab {
   }
 
   /**
+   * \brief Returns a qasm string for a controlled Puali-X gate with given
+   *        control qubit `control` and target qubit `target`.
+   */
+  inline auto qasmCX( const int control , const int target ) {
+    return qasm2( "cx" , control , target ) ;
+  }
+
+  /**
+   * \brief Returns a qasm string for a controlled Puali-Y gate with given
+   *        control qubit `control` and target qubit `target`.
+   */
+  inline auto qasmCY( const int control , const int target ) {
+    return qasm2( "cy" , control , target ) ;
+  }
+
+  /**
+   * \brief Returns a qasm string for a controlled Puali-Z gate with given
+   *        control qubit `control` and target qubit `target`.
+   */
+  inline auto qasmCZ( const int control , const int target ) {
+    return qasm2( "cz" , control , target ) ;
+  }
+
+  /**
+   * \brief Returns a qasm string for a controlled X-rotation gate with given
+   *        control qubit `control`, target qubit `target`, and angle `angle`.
+   */
+  template <typename T>
+  inline auto qasmCRx( const int control , const int target , const T angle ) {
+    return qasm2( "crx" , control , target , angle ) ;
+  }
+
+  /**
+   * \brief Returns a qasm string for a controlled Y-rotation gate with given
+   *        control qubit `control`, target qubit `target`, and angle `angle`.
+   */
+  template <typename T>
+  inline auto qasmCRy( const int control , const int target , const T angle ) {
+    return qasm2( "cry" , control , target , angle ) ;
+  }
+
+  /**
+   * \brief Returns a qasm string for a controlled Z-rotation gate with given
+   *        control qubit `control`, target qubit `target`, and angle `angle`.
+   */
+  template <typename T>
+  inline auto qasmCRz( const int control , const int target , const T angle ) {
+    return qasm2( "crz" , control , target , angle ) ;
+  }
+
+  /**
    * \brief Returns a qasm string for a controlled phase gate with given control
    *        qubit `control`, target qubit `target`, and angle `angle`.
    */
@@ -151,6 +208,14 @@ namespace qclab {
    */
   inline auto qasmSWAP( const int qubit0 , const int qubit1 ) {
     return qasm2( "swap" , qubit0 , qubit1 ) ;
+  }
+
+  /**
+   * \brief Returns a qasm string for an iSWAP gate on the given qubits `qubit0`
+   *        and `qubit1`.
+   */
+  inline auto qasmiSWAP( const int qubit0 , const int qubit1 ) {
+    return qasm2( "iswap" , qubit0 , qubit1 ) ;
   }
 
 } // namespace qclab
