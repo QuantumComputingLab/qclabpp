@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/iSWAP.hpp"
+#include "qclab/qgates/iSWAP.hpp"
 
 template <typename M>
 void test_qclab_qgates_iSWAP_check( const M m1 , const M m2 ) {

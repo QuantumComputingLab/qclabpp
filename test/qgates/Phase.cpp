@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/Phase.hpp"
+#include "qclab/qgates/Phase.hpp"
 
 template <typename T>
 void test_qclab_qgates_Phase() {

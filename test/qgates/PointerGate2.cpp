@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "qgates/PointerGate2.hpp"
-#include "qgates/CNOT.hpp"
-#include "qgates/SWAP.hpp"
+#include "qclab/qgates/PointerGate2.hpp"
+#include "qclab/qgates/CNOT.hpp"
+#include "qclab/qgates/SWAP.hpp"
 
 template <typename T>
 void test_qclab_qgates_PointerGate2() {

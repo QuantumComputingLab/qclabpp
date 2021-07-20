@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/CPhase.hpp"
+#include "qclab/qgates/CPhase.hpp"
 
 template <typename T>
 void test_qclab_qgates_CPhase() {

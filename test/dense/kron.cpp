@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "dense/kron.hpp"
+#include "qclab/dense/kron.hpp"
 #include <complex>
 
 template <typename T>

@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
-#include "QCircuit.hpp"
-#include "qgates/Hadamard.hpp"
-#include "qgates/PauliX.hpp"
-#include "qgates/PauliY.hpp"
-#include "qgates/PauliZ.hpp"
-#include "qgates/CNOT.hpp"
-#include "qgates/SWAP.hpp"
+#include "qclab/QCircuit.hpp"
+#include "qclab/qgates/Hadamard.hpp"
+#include "qclab/qgates/PauliX.hpp"
+#include "qclab/qgates/PauliY.hpp"
+#include "qclab/qgates/PauliZ.hpp"
+#include "qclab/qgates/CNOT.hpp"
+#include "qclab/qgates/SWAP.hpp"
 
 template <typename T>
 void test_qclab_QCircuit() {
@@ -77,6 +77,28 @@ void test_qclab_QCircuit() {
     EXPECT_EQ( circuit.qubits()[0] , 2 ) ;
     EXPECT_EQ( circuit.qubits()[1] , 3 ) ;
     EXPECT_EQ( circuit.qubits()[2] , 4 ) ;
+  }
+
+  {
+    qclab::QCircuit< T >  circuit( 3 , 0 , 4 ) ;
+
+    EXPECT_EQ( circuit.nbQubits() , 3 ) ;     // nbQubits
+    EXPECT_FALSE( circuit.fixed() ) ;         // fixed
+    EXPECT_FALSE( circuit.controlled() ) ;    // controlled
+    EXPECT_EQ( circuit.nbGates() , 4 ) ;      // nbGates
+
+    // qubit(s)
+    EXPECT_EQ( circuit.qubit() , 0 ) ;
+    EXPECT_EQ( circuit.qubits().size() , 3 ) ;
+    EXPECT_EQ( circuit.qubits()[0] , 0 ) ;
+    EXPECT_EQ( circuit.qubits()[1] , 1 ) ;
+    EXPECT_EQ( circuit.qubits()[2] , 2 ) ;
+
+    // gates
+    EXPECT_TRUE( circuit[0] == nullptr ) ;
+    EXPECT_TRUE( circuit[1] == nullptr ) ;
+    EXPECT_TRUE( circuit[2] == nullptr ) ;
+    EXPECT_TRUE( circuit[3] == nullptr ) ;
   }
 
   {

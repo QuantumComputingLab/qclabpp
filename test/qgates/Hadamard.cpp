@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/Hadamard.hpp"
+#include "qclab/qgates/Hadamard.hpp"
 #include <limits>
 
 template <typename T>

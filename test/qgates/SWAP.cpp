@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/SWAP.hpp"
+#include "qclab/qgates/SWAP.hpp"
 
 template <typename T>
 void test_qclab_qgates_SWAP() {

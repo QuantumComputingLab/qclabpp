@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/Identity.hpp"
+#include "qclab/qgates/Identity.hpp"
 
 template <typename T>
 void test_qclab_qgates_Identity() {

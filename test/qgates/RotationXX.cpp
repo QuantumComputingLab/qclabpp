@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/RotationXX.hpp"
+#include "qclab/qgates/RotationXX.hpp"
 
 template <typename T>
 void test_qclab_qgates_RotationXX() {

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
-#include "dense/transpose.hpp"
+#include "qclab/dense/transpose.hpp"
+#include "qclab/dense/SquareMatrix.hpp"
+#include <complex>
 
 template <typename T>
 void test_qclab_dense_transpose() {

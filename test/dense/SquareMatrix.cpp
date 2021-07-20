@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "dense/SquareMatrix.hpp"
+#include "qclab/dense/SquareMatrix.hpp"
 #include <complex>
 
 template <typename T>

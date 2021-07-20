@@ -28,7 +28,7 @@ The recommended way of building QCLAB++ is as follows:
 
 3. Run tests
 
-        ./test/run
+        ./test/qclab_tests
 
 4. Generate documentation
 

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/CNOT.hpp"
+#include "qclab/qgates/CNOT.hpp"
 
 template <typename T, qclab::Side side>
 void test_qclab_qgates_QControlledGate2() {

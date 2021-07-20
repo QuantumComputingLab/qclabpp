@@ -864,47 +864,47 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/src/QObject.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/QAdjustable.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/QAngle.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/QCircuit.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/QRotation.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/util.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qasm.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/dense/SquareMatrix.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/dense/memory.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/dense/kron.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QGate1.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Identity.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Hadamard.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/PauliX.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/PauliY.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/PauliZ.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QRotationGate1.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationX.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationY.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationZ.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Phase.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Phase45.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/Phase90.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/PointerGate1.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QGate2.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QRotationGate2.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationXX.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationYY.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/RotationZZ.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/QControlledGate2.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CX.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CY.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CZ.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CNOT.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/SWAP.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/iSWAP.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CRotationX.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CRotationY.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CRotationZ.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/CPhase.hpp \
-                         @CMAKE_CURRENT_SOURCE_DIR@/src/qgates/PointerGate2.hpp \
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/QObject.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/QAdjustable.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/QAngle.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/QCircuit.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/QRotation.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/util.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qasm.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/dense/SquareMatrix.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/dense/memory.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/dense/kron.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/QGate1.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/Identity.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/Hadamard.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/PauliX.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/PauliY.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/PauliZ.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/QRotationGate1.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/RotationX.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/RotationY.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/RotationZ.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/Phase.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/Phase45.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/Phase90.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/PointerGate1.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/QGate2.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/QRotationGate2.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/RotationXX.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/RotationYY.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/RotationZZ.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/QControlledGate2.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CX.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CY.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CZ.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CNOT.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/SWAP.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/iSWAP.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CRotationX.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CRotationY.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CRotationZ.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/CPhase.hpp \
+                         @CMAKE_CURRENT_SOURCE_DIR@/include/qclab/qgates/PointerGate2.hpp \
                          @CMAKE_CURRENT_SOURCE_DIR@/doc/doxygen/pages/Overview.txt \
                          @CMAKE_CURRENT_SOURCE_DIR@/doc/doxygen/images
 

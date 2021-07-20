@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "dense/memory.hpp"
+#include "qclab/dense/memory.hpp"
 #include <complex>
 
 template <typename T>

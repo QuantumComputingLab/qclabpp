@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/CRotationZ.hpp"
+#include "qclab/qgates/CRotationZ.hpp"
 
 template <typename T>
 void test_qclab_qgates_CRotationZ() {

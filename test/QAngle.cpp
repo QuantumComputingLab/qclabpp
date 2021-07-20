@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "QAngle.hpp"
+#include "qclab/QAngle.hpp"
 
 template <typename T>
 void test_qclab_QAngle() {

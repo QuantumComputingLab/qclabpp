@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/CX.hpp"
+#include "qclab/qgates/CX.hpp"
 
 template <typename T>
 void test_qclab_qgates_CX() {

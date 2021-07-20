@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "qgates/PauliZ.hpp"
+#include "qclab/qgates/PauliZ.hpp"
 
 template <typename T>
 void test_qclab_qgates_PauliZ() {

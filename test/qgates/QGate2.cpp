@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include "qgates/RotationXX.hpp"
-#include "qgates/RotationYY.hpp"
+#include "qclab/qgates/RotationXX.hpp"
+#include "qclab/qgates/RotationYY.hpp"
+#include "qclab/dense/kron.hpp"
 
 template <typename T>
 void test_qclab_qgates_QGate2() {

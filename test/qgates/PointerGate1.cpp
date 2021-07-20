@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "qgates/PointerGate1.hpp"
-#include "qgates/PauliX.hpp"
-#include "qgates/PauliZ.hpp"
+#include "qclab/qgates/PointerGate1.hpp"
+#include "qclab/qgates/PauliX.hpp"
+#include "qclab/qgates/PauliZ.hpp"
 
 template <typename T>
 void test_qclab_qgates_PointerGate1() {

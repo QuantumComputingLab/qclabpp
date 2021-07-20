@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include "qgates/PauliX.hpp"
-#include "qgates/RotationY.hpp"
+#include "qclab/dense/kron.hpp"
+#include "qclab/qgates/PauliX.hpp"
+#include "qclab/qgates/RotationY.hpp"
 
 template <typename T>
 void test_qclab_qgates_QGate1() {

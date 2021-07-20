@@ -1,7 +1,7 @@
-#include "QCircuit.hpp"
-#include "qgates/Hadamard.hpp"
-#include "qgates/CPhase.hpp"
-#include "qgates/SWAP.hpp"
+#include "qclab/QCircuit.hpp"
+#include "qclab/qgates/Hadamard.hpp"
+#include "qclab/qgates/CPhase.hpp"
+#include "qclab/qgates/SWAP.hpp"
 #include <iostream>
 #include <iomanip>
 

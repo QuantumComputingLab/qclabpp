@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "QRotation.hpp"
+#include "qclab/QRotation.hpp"
 
 template <typename T>
 void test_qclab_QRotation() {
