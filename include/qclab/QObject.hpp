@@ -49,6 +49,10 @@ namespace qclab {
       /// Returns the unitary matrix corresponding to this quantum object.
       virtual qclab::dense::SquareMatrix< T > matrix() const = 0 ;
 
+      /// Applies this quantum object to the given vector.
+      virtual void apply( Op op , const int size , std::vector< T >& vector ,
+                          const int offset = 0 ) const = 0 ;
+
       /// Applies this quantum object to the given matrix.
       virtual void apply( Side side , Op op , const int size ,
                           qclab::dense::SquareMatrix< T >& matrix ,

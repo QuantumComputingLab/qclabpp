@@ -1,6 +1,24 @@
 #include <gtest/gtest.h>
 #include "qclab/qgates/iSWAP.hpp"
 
+template <typename T>
+void test_qclab_qgates_iSWAP_check( const std::vector< T >& v1 ,
+                                    const std::vector< T >& v2 ) {
+
+  assert( v1.size() == v2.size() ) ;
+
+  using R = qclab::real_t< T > ;
+  const R eps = std::numeric_limits< R >::epsilon() ;
+  const R tol = 100 * eps ;
+
+  for ( size_t i = 0; i < v1.size(); i++ ) {
+    EXPECT_NEAR( std::real( v1[i] ) , std::real( v2[i] ) , tol ) ;
+    EXPECT_NEAR( std::imag( v1[i] ) , std::imag( v2[i] ) , tol ) ;
+  }
+
+}
+
+
 template <typename M>
 void test_qclab_qgates_iSWAP_check( const M m1 , const M m2 ) {
 
@@ -28,6 +46,11 @@ void test_qclab_qgates_iSWAP() {
   const auto I2 = qclab::dense::eye< T >(  4 ) ;
   const auto I3 = qclab::dense::eye< T >(  8 ) ;
   const auto I4 = qclab::dense::eye< T >( 16 ) ;
+
+  using V = std::vector< T > ;
+  const V v2 = { 3 , 5 , 2 , 7 } ;
+  const V v3 = { 3 , 5 , 2 , 7 , 4 , 1 , 8 , 3 } ;
+  const V v4 = { 3 , 5 , 2 , 7 , 4 , 1 , 8 , 3 , 7 , 2 , 5 , 6 , 8 , 9 , 5 , 1};
 
   {
     qclab::qgates::iSWAP< T >  iswap ;
@@ -94,6 +117,95 @@ void test_qclab_qgates_iSWAP() {
     EXPECT_FALSE( iswap.controlled() ) ;  // controlled
     EXPECT_EQ( iswap.qubits()[0] , 3 ) ;  // qubit0
     EXPECT_EQ( iswap.qubits()[1] , 5 ) ;  // qubit1
+  }
+
+  {
+    qclab::qgates::iSWAP< T >  iswap( 0 , 1 ) ;
+
+    // apply (2 qubits)
+    auto vec2 = v2 ;
+    iswap.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
+    V check2 = { 3 , T(0,2) , T(0,5) , 7 } ;
+    test_qclab_qgates_iSWAP_check( vec2 , check2 ) ;
+    vec2 = v2 ;
+    iswap.apply( qclab::Op::ConjTrans , 2 , vec2 ) ;
+    check2 = { 3 , T(0,-2) , T(0,-5) , 7 } ;
+    test_qclab_qgates_iSWAP_check( vec2 , check2 ) ;
+
+    // apply (3 qubits)
+    auto vec3 = v3 ;
+    iswap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    V check3 = { 3 , 5 , T(0,4) , T(0,1) , T(0,2) , T(0,7) , 8 , 3 } ;
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+    vec3 = v3 ;
+    iswap.apply( qclab::Op::ConjTrans , 3 , vec3 ) ;
+    check3 = { 3 , 5 , T(0,-4) , T(0,-1) , T(0,-2) , T(0,-7) , 8 , 3 } ;
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+
+    int qnew[] = { 1 , 2 } ;
+    iswap.setQubits( &qnew[0] ) ;
+    vec3 = v3 ;
+    iswap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    check3 = { 3 , T(0,2) , T(0,5) , 7 , 4 , T(0,8) , T(0,1) , 3 } ;
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+    vec3 = v3 ;
+    iswap.apply( qclab::Op::ConjTrans , 3 , vec3 ) ;
+    check3 = { 3 , T(0,-2) , T(0,-5) , 7 , 4 , T(0,-8) , T(0,-1) , 3 } ;
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+
+    // apply (4 qubits)
+    auto vec4 = v4 ;
+    iswap.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
+    V check4 = { 3 , 5 , T(0,4) , T(0,1) , T(0,2) , T(0,7) , 8 , 3 ,
+                 7 , 2 , T(0,8) , T(0,9) , T(0,5) , T(0,6) , 5 , 1 } ;
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+    vec4 = v4 ;
+    iswap.apply( qclab::Op::ConjTrans , 4 , vec4 ) ;
+    check4 = { 3 , 5 , T(0,-4) , T(0,-1) , T(0,-2) , T(0,-7) , 8 , 3 ,
+               7 , 2 , T(0,-8) , T(0,-9) , T(0,-5) , T(0,-6) , 5 , 1 } ;
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+
+    qnew[0] = 0 ;
+    qnew[1] = 1 ;
+    iswap.setQubits( &qnew[0] ) ;
+    vec4 = v4 ;
+    iswap.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
+    check4 = { 3 , 5 , 2 , 7 , T(0,7) , T(0,2) , T(0,5) , T(0,6) ,
+               T(0,4) , T(0,1) , T(0,8) , T(0,3) , 8 , 9 , 5 , 1 } ;
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+    vec4 = v4 ;
+    iswap.apply( qclab::Op::ConjTrans , 4 , vec4 ) ;
+    check4 = { 3 , 5 , 2 , 7 , T(0,-7) , T(0,-2) , T(0,-5) , T(0,-6) ,
+               T(0,-4) , T(0,-1) , T(0,-8) , T(0,-3) , 8 , 9 , 5 , 1 } ;
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+
+    qnew[0] = 2 ;
+    qnew[1] = 3 ;
+    iswap.setQubits( &qnew[0] ) ;
+    vec4 = v4 ;
+    iswap.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
+    check4 = { 3 , T(0,2) , T(0,5) , 7 , 4 , T(0,8) , T(0,1) , 3 ,
+               7 , T(0,5) , T(0,2) , 6 , 8 , T(0,5) , T(0,9) , 1 } ;
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+    vec4 = v4 ;
+    iswap.apply( qclab::Op::ConjTrans , 4 , vec4 ) ;
+    check4 = { 3 , T(0,-2) , T(0,-5) , 7 , 4 , T(0,-8) , T(0,-1) , 3 ,
+               7 , T(0,-5) , T(0,-2) , 6 , 8 , T(0,-5) , T(0,-9) , 1 } ;
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  }
+
+  {
+    qclab::qgates::iSWAP< T >  iswap( 0 , 2 ) ;
+
+    // apply (3 qubits)
+    auto vec3 = v3 ;
+    iswap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    V check3 = { 3 , T(0,4) , 2 , T(0,8) , T(0,5) , 1 , T(0,7) , 3 } ;
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+    vec3 = v3 ;
+    iswap.apply( qclab::Op::ConjTrans , 3 , vec3 ) ;
+    check3 = { 3 , T(0,-4) , 2 , T(0,-8) , T(0,-5) , 1 , T(0,-7) , 3 } ;
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
   }
 
   {

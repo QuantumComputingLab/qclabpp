@@ -90,6 +90,91 @@ namespace qclab {
         }
 
         // apply
+        void apply( Op op , const int nbQubits , std::vector< T >& vector ,
+                    const int offset = 0 ) const override {
+          using matrix_type = qclab::dense::SquareMatrix< T > ;
+          assert( nbQubits >= 2 ) ;
+          assert( vector.size() == 1 << nbQubits ) ;
+          auto qubits = this->qubits() ;
+          qubits[0] += offset ;
+          qubits[1] += offset ;
+          assert( qubits[0] < nbQubits ) ; assert( qubits[1] < nbQubits ) ;
+          // operation
+          matrix_type  mat1 = this->gate()->matrix() ;
+          qclab::dense::operateInPlace( op , mat1 ) ;
+          // control / target
+          if ( control() < target() ) {
+            // control() < target()
+            const int64_t d = 1 << ( target() - control() ) ;
+            const int64_t nLeft  = 1 << target() ;
+            const int64_t nRight = 1 << ( nbQubits - target() - 1 ) ;
+            if ( nLeft >= nRight ) {
+              #pragma omp parallel for
+              for ( int64_t k = 0; k < nLeft; k++ ) {
+                if ( controlState_ == 0 && ( k % d >= d/2 ) ) continue ;
+                if ( controlState_ == 1 && ( k % d <  d/2 ) ) continue ;
+                for ( int64_t i = 0; i < nRight; i++ ) {
+                  const int64_t i1 = i + 2 * k * nRight ;
+                  const int64_t i2 = i1 + nRight ;
+                  const T x1 = vector[i1] ;
+                  const T x2 = vector[i2] ;
+                  vector[i1] = mat1(0,0) * x1 + mat1(0,1) * x2 ;
+                  vector[i2] = mat1(1,0) * x1 + mat1(1,1) * x2 ;
+                }
+              }
+            } else {
+              for ( int64_t k = 0; k < nLeft; k++ ) {
+                if ( controlState_ == 0 && ( k % d >= d/2 ) ) continue ;
+                if ( controlState_ == 1 && ( k % d <  d/2 ) ) continue ;
+                #pragma omp parallel for
+                for ( int64_t i = 0; i < nRight; i++ ) {
+                  const int64_t i1 = i + 2 * k * nRight ;
+                  const int64_t i2 = i1 + nRight ;
+                  const T x1 = vector[i1] ;
+                  const T x2 = vector[i2] ;
+                  vector[i1] = mat1(0,0) * x1 + mat1(0,1) * x2 ;
+                  vector[i2] = mat1(1,0) * x1 + mat1(1,1) * x2 ;
+                }
+              }
+            }
+          } else {
+            // control() >= target()
+            const int64_t d = 1 << ( nbQubits - control() ) ;
+            const int64_t nLeft  = 1 << target() ;
+            const int64_t nRight = 1 << ( nbQubits - target() - 1 ) ;
+            if ( nLeft >= nRight ) {
+              #pragma omp parallel for
+              for ( int64_t k = 0; k < nLeft; k++ ) {
+                for ( int64_t i = 0; i < nRight; i++ ) {
+                  if ( controlState_ == 0 && ( i % d >= d/2 ) ) continue ;
+                  if ( controlState_ == 1 && ( i % d <  d/2 ) ) continue ;
+                  const int64_t i1 = i + 2 * k * nRight ;
+                  const int64_t i2 = i1 + nRight ;
+                  const T x1 = vector[i1] ;
+                  const T x2 = vector[i2] ;
+                  vector[i1] = mat1(0,0) * x1 + mat1(0,1) * x2 ;
+                  vector[i2] = mat1(1,0) * x1 + mat1(1,1) * x2 ;
+                }
+              }
+            } else {
+              for ( int64_t k = 0; k < nLeft; k++ ) {
+                #pragma omp parallel for
+                for ( int64_t i = 0; i < nRight; i++ ) {
+                  if ( controlState_ == 0 && ( i % d >= d/2 ) ) continue ;
+                  if ( controlState_ == 1 && ( i % d <  d/2 ) ) continue ;
+                  const int64_t i1 = i + 2 * k * nRight ;
+                  const int64_t i2 = i1 + nRight ;
+                  const T x1 = vector[i1] ;
+                  const T x2 = vector[i2] ;
+                  vector[i1] = mat1(0,0) * x1 + mat1(0,1) * x2 ;
+                  vector[i2] = mat1(1,0) * x1 + mat1(1,1) * x2 ;
+                }
+              }
+            }
+          }
+        }
+
+        // apply
         void apply( Side side , Op op , const int nbQubits ,
                     qclab::dense::SquareMatrix< T >& matrix ,
                     const int offset = 0 ) const override {
@@ -103,8 +188,9 @@ namespace qclab {
           // operation
           matrix_type  mat1 = this->gate()->matrix() ;
           qclab::dense::operateInPlace( op , mat1 ) ;
-          // side
+          // control / target
           if ( control() < target() ) {
+            // control() < target()
             const int64_t d = 1 << ( target() - control() ) ;
             const int64_t nLeft  = 1 << target() ;
             const int64_t nRight = 1 << ( nbQubits - target() - 1 ) ;
@@ -142,6 +228,7 @@ namespace qclab {
               }
             }
           } else {
+            // control() >= target()
             const int64_t d = 1 << ( nbQubits - control() ) ;
             const int64_t nLeft  = 1 << target() ;
             const int64_t nRight = 1 << ( nbQubits - target() - 1 ) ;

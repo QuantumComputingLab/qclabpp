@@ -113,6 +113,27 @@ namespace qclab {
       }
 
       // apply
+      void apply( Op op , const int nbQubits , std::vector< T >& vector ,
+                  const int offset = 0 ) const override {
+        if ( op == Op::NoTrans ) {
+          // NoTrans
+          for ( auto it = begin(); it != end(); ++it ) {
+            (*it)->apply( op , nbQubits , vector , offset_ + offset ) ;
+          }
+        } else {
+          // [Conj]Trans
+          for ( auto it = rbegin(); it != rend(); ++it ) {
+            (*it)->apply( op , nbQubits , vector , offset_ + offset ) ;
+          }
+        }
+      }
+
+      /// Simulates this quantum circuit for the given vector `vector`.
+      void simulate( std::vector< T >& vector ) const {
+        apply( Op::NoTrans , nbQubits_ , vector ) ;
+      }
+
+      // apply
       void apply( Side side , Op op , const int nbQubits ,
                   qclab::dense::SquareMatrix< T >& matrix ,
                   const int offset = 0 ) const override {

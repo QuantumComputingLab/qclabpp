@@ -78,6 +78,39 @@ namespace qclab {
         }
 
         // apply
+        void apply( Op op , const int nbQubits , std::vector< T >& vector ,
+                    const int offset = 0 ) const override {
+          assert( nbQubits >= 2 ) ;
+          assert( vector.size() == 1 << nbQubits ) ;
+          const int qubit0 = qubits_[0] + offset ;
+          const int qubit1 = qubits_[1] + offset ;
+          assert( qubit0 < nbQubits ) ; assert( qubit1 < nbQubits ) ;
+          //
+          // -/-----\-   -[S]-[H]--*--[X]-----   -----[X]--*--[H]-[S]-
+          //  |iSWAP|  =           |   |       =       |   |
+          // -\-----/-   -[S]-----[X]--*--[H]-   -[H]--*--[X]-----[S]-
+          //
+          qclab::qgates::Phase90< T >  S( qubit0 ) ;
+          qclab::qgates::Hadamard< T > H( qubit0 ) ;
+          qclab::qgates::CNOT< T >     CNOT( qubit0 , qubit1 ) ;
+          // layer 1
+          S.apply( op , nbQubits , vector ) ;
+          S.setQubit( qubit1 ) ;
+          S.apply( op , nbQubits , vector ) ;
+          // layer 2
+          H.apply( op , nbQubits , vector ) ;
+          // layer 3
+          CNOT.apply( op , nbQubits , vector ) ;
+          // layer 4
+          int qnew[] = { qubit1 , qubit0 } ;
+          CNOT.setQubits( &qnew[0] ) ;
+          CNOT.apply( op , nbQubits , vector ) ;
+          // layer 5
+          H.setQubit( qubit1 ) ;
+          H.apply( op , nbQubits , vector ) ;
+        }
+
+        // apply
         void apply( Side side , Op op , const int nbQubits ,
                     qclab::dense::SquareMatrix< T >& matrix ,
                     const int offset = 0 ) const override {

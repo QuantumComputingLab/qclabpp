@@ -38,6 +38,84 @@ namespace qclab {
         // matrix
 
         // apply
+        void apply( Op op , const int nbQubits , std::vector< T >& vector ,
+                    const int offset = 0 ) const override {
+          assert( nbQubits >= 2 ) ;
+          assert( vector.size() == 1 << nbQubits ) ;
+          auto qubits = this->qubits() ;
+          qubits[0] += offset ;
+          qubits[1] += offset ;
+          assert( qubits[0] < nbQubits ) ; assert( qubits[1] < nbQubits ) ;
+          assert( qubits[0] + 1 == qubits[1] ) ;  // nearest neighbor qubtis
+          // operation
+          qclab::dense::SquareMatrix< T >  mat2 = this->matrix() ;
+          qclab::dense::operateInPlace( op , mat2 ) ;
+          if ( nbQubits == 2 ) {
+            const T v0 = vector[0] ;
+            const T v1 = vector[1] ;
+            const T v2 = vector[2] ;
+            const T v3 = vector[3] ;
+            vector[0] = mat2(0,0) * v0 + mat2(0,1) * v1 +
+                        mat2(0,2) * v2 + mat2(0,3) * v3 ;
+            vector[1] = mat2(1,0) * v0 + mat2(1,1) * v1 +
+                        mat2(1,2) * v2 + mat2(1,3) * v3 ;
+            vector[2] = mat2(2,0) * v0 + mat2(2,1) * v1 +
+                        mat2(2,2) * v2 + mat2(2,3) * v3 ;
+            vector[3] = mat2(3,0) * v0 + mat2(3,1) * v1 +
+                        mat2(3,2) * v2 + mat2(3,3) * v3 ;
+          } else {
+            // vector = kron( Ileft , mat2 , Iright ) * vector
+            const int64_t nLeft  = 1 << qubits[0] ;
+            const int64_t nRight = 1 << ( nbQubits - qubits[1] - 1 ) ;
+            if ( nLeft >= nRight ) {
+              #pragma omp parallel for
+              for ( int64_t k = 0; k < nLeft; k++ ) {
+                for ( int64_t i = 0; i < nRight; i++ ) {
+                  const int64_t i1 = i + 4 * k * nRight ;
+                  const int64_t i2 = i1 + nRight ;
+                  const int64_t i3 = i2 + nRight ;
+                  const int64_t i4 = i3 + nRight ;
+                  const T x1 = vector[i1] ;
+                  const T x2 = vector[i2] ;
+                  const T x3 = vector[i3] ;
+                  const T x4 = vector[i4] ;
+                  vector[i1] = mat2(0,0) * x1 + mat2(0,1) * x2 +
+                               mat2(0,2) * x3 + mat2(0,3) * x4 ;
+                  vector[i2] = mat2(1,0) * x1 + mat2(1,1) * x2 +
+                               mat2(1,2) * x3 + mat2(1,3) * x4 ;
+                  vector[i3] = mat2(2,0) * x1 + mat2(2,1) * x2 +
+                               mat2(2,2) * x3 + mat2(2,3) * x4 ;
+                  vector[i4] = mat2(3,0) * x1 + mat2(3,1) * x2 +
+                               mat2(3,2) * x3 + mat2(3,3) * x4 ;
+                }
+              }
+            } else {
+              for ( int64_t k = 0; k < nLeft; k++ ) {
+                #pragma omp parallel for
+                for ( int64_t i = 0; i < nRight; i++ ) {
+                  const int64_t i1 = i + 4 * k * nRight ;
+                  const int64_t i2 = i1 + nRight ;
+                  const int64_t i3 = i2 + nRight ;
+                  const int64_t i4 = i3 + nRight ;
+                  const T x1 = vector[i1] ;
+                  const T x2 = vector[i2] ;
+                  const T x3 = vector[i3] ;
+                  const T x4 = vector[i4] ;
+                  vector[i1] = mat2(0,0) * x1 + mat2(0,1) * x2 +
+                               mat2(0,2) * x3 + mat2(0,3) * x4 ;
+                  vector[i2] = mat2(1,0) * x1 + mat2(1,1) * x2 +
+                               mat2(1,2) * x3 + mat2(1,3) * x4 ;
+                  vector[i3] = mat2(2,0) * x1 + mat2(2,1) * x2 +
+                               mat2(2,2) * x3 + mat2(2,3) * x4 ;
+                  vector[i4] = mat2(3,0) * x1 + mat2(3,1) * x2 +
+                               mat2(3,2) * x3 + mat2(3,3) * x4 ;
+                }
+              }
+            }
+          }
+        }
+
+        // apply
         void apply( Side side , Op op , const int nbQubits ,
                     qclab::dense::SquareMatrix< T >& matrix ,
                     const int offset = 0 ) const override {

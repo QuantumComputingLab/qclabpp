@@ -7,11 +7,99 @@ template <typename T>
 void test_qclab_qgates_QGate1() {
 
   using R = qclab::real_t< T > ;
+  using V = std::vector< T > ;
   using M = qclab::dense::SquareMatrix< T > ;
 
-  auto I1 = qclab::dense::eye< T >( 2 ) ;
-  auto I2 = qclab::dense::eye< T >( 4 ) ;
-  auto I3 = qclab::dense::eye< T >( 8 ) ;
+  const auto I1 = qclab::dense::eye< T >( 2 ) ;
+  const auto I2 = qclab::dense::eye< T >( 4 ) ;
+  const auto I3 = qclab::dense::eye< T >( 8 ) ;
+
+  const V v1 = { 3 , 5 } ;
+  const V v2 = { 3 , 5 , 2 , 7 } ;
+  const V v3 = { 3 , 5 , 2 , 7 , 4 , 1 , 8 , 3 } ;
+
+  // apply (NoTrans)
+  {
+    qclab::qgates::PauliX< T >  X( 0 ) ;
+
+    // nbQubits = 1
+    auto vec1 = v1 ;
+    X.apply( qclab::Op::NoTrans , 1 , vec1 ) ;
+    V check1 = { 5 , 3 } ;
+    EXPECT_TRUE( vec1 == check1 ) ;
+
+    // nbQubits = 2
+    auto vec2 = v2 ;
+    X.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
+    V check2 = { 2 , 7 , 3 , 5 } ;
+    EXPECT_TRUE( vec2 == check2 ) ;
+
+    X.setQubit( 1 ) ;
+    vec2 = v2 ;
+    X.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
+    check2 = { 5 , 3 , 7 , 2 } ;
+    EXPECT_TRUE( vec2 == check2 ) ;
+
+    // nbQubits = 3
+    auto vec3 = v3 ;
+    X.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    V check3 = { 2 , 7 , 3 , 5 , 8 , 3 , 4 , 1 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+
+    X.setQubit( 0 ) ;
+    vec3 = v3 ;
+    X.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    check3 = { 4 , 1 , 8 , 3 , 3 , 5 , 2 , 7 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+
+    X.setQubit( 2 ) ;
+    vec3 = v3 ;
+    X.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    check3 = { 5 , 3 , 7 , 2 , 1 , 4 , 3 , 8 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+  }
+
+  // apply (Trans)
+  {
+    qclab::qgates::RotationY< T >  Y( 0 , R(0) , R(1) ) ;
+
+    // nbQubits = 1
+    auto vec1 = v1 ;
+    Y.apply( qclab::Op::Trans , 1 , vec1 ) ;
+    V check1 = { 5 , -3 } ;
+    EXPECT_TRUE( vec1 == check1 ) ;
+
+    // nbQubits = 2
+    auto vec2 = v2 ;
+    Y.apply( qclab::Op::Trans , 2 , vec2 ) ;
+    V check2 = { 2 , 7 , -3 , -5 } ;
+    EXPECT_TRUE( vec2 == check2 ) ;
+
+    Y.setQubit( 1 ) ;
+    vec2 = v2 ;
+    Y.apply( qclab::Op::Trans , 2 , vec2 ) ;
+    check2 = { 5 , -3 , 7 , -2 } ;
+    EXPECT_TRUE( vec2 == check2 ) ;
+
+    // nbQubits = 3
+    auto vec3 = v3 ;
+    Y.apply( qclab::Op::Trans , 3 , vec3 ) ;
+    V check3 = { 2 , 7 , -3 , -5 , 8 , 3 , -4 , -1 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+
+    Y.setQubit( 0 ) ;
+    vec3 = v3 ;
+    Y.apply( qclab::Op::Trans , 3 , vec3 ) ;
+    check3 = { 4 , 1 , 8 , 3 , -3 , -5 , -2 , -7 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+
+    Y.setQubit( 2 ) ;
+    vec3 = v3 ;
+    Y.apply( qclab::Op::Trans , 3 , vec3 ) ;
+    check3 = { 5 , -3 , 7 , -2 , 1 , -4 , 3 , -8 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+  }
+
 
   // apply (Left + NoTrans)
   {

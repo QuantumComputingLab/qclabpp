@@ -60,6 +60,12 @@ namespace qclab {
         }
 
         // apply
+        void apply( Op op , const int nbQubits , std::vector< T >& vector ,
+                    const int offset = 0 ) const override {
+          gate_->apply( op , nbQubits , vector , offset_ + offset ) ;
+        }
+
+        // apply
         void apply( Side side , Op op , const int nbQubits ,
                     qclab::dense::SquareMatrix< T >& matrix ,
                     const int offset = 0 ) const override {

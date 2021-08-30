@@ -9,6 +9,11 @@ void test_qclab_qgates_SWAP() {
   const auto I3 = qclab::dense::eye< T >(  8 ) ;
   const auto I4 = qclab::dense::eye< T >( 16 ) ;
 
+  using V = std::vector< T > ;
+  const V v2 = { 3 , 5 , 2 , 7 } ;
+  const V v3 = { 3 , 5 , 2 , 7 , 4 , 1 , 8 , 3 } ;
+  const V v4 = { 3 , 5 , 2 , 7 , 4 , 1 , 8 , 3 , 7 , 2 , 5 , 6 , 8 , 9 , 5 , 1};
+
   {
     qclab::qgates::SWAP< T >  swap ;
 
@@ -73,6 +78,61 @@ void test_qclab_qgates_SWAP() {
     EXPECT_FALSE( swap.controlled() ) ;  // controlled
     EXPECT_EQ( swap.qubits()[0] , 3 ) ;  // qubit0
     EXPECT_EQ( swap.qubits()[1] , 5 ) ;  // qubit1
+  }
+
+  {
+    qclab::qgates::SWAP< T >  swap( 0 , 1 ) ;
+
+    // apply (2 qubits)
+    auto vec2 = v2 ;
+    swap.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
+    V check2 = { 3 , 2 , 5 , 7 } ;
+    EXPECT_TRUE( vec2 == check2 ) ;
+
+    // apply (3 qubits)
+    auto vec3 = v3 ;
+    swap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    V check3 = { 3 , 5 , 4 , 1 , 2 , 7 , 8 , 3 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+
+    int qnew[] = { 1 , 2 } ;
+    swap.setQubits( &qnew[0] ) ;
+    vec3 = v3 ;
+    swap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    check3 = { 3 , 2 , 5 , 7 , 4 , 8 , 1 , 3 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
+
+    // apply (4 qubits)
+    auto vec4 = v4 ;
+    swap.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
+    V check4 = { 3 , 5 , 4 , 1 , 2 , 7 , 8 , 3 , 7 , 2 , 8 , 9 , 5 , 6 , 5 , 1};
+    EXPECT_TRUE( vec4 == check4 ) ;
+
+    qnew[0] = 0 ;
+    qnew[1] = 1 ;
+    swap.setQubits( &qnew[0] ) ;
+    vec4 = v4 ;
+    swap.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
+    check4 = { 3 , 5 , 2 , 7 , 7 , 2 , 5 , 6 , 4 , 1 , 8 , 3 , 8 , 9 , 5 , 1 } ;
+    EXPECT_TRUE( vec4 == check4 ) ;
+
+    qnew[0] = 2 ;
+    qnew[1] = 3 ;
+    swap.setQubits( &qnew[0] ) ;
+    vec4 = v4 ;
+    swap.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
+    check4 = { 3 , 2 , 5 , 7 , 4 , 8 , 1 , 3 , 7 , 5 , 2 , 6 , 8 , 5 , 9 , 1 } ;
+    EXPECT_TRUE( vec4 == check4 ) ;
+  }
+
+  {
+    qclab::qgates::SWAP< T >  swap( 0 , 2 ) ;
+
+    // apply (3 qubits)
+    auto vec3 = v3 ;
+    swap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
+    V check3 = { 3 , 4 , 2 , 8 , 5 , 1 , 7 , 3 } ;
+    EXPECT_TRUE( vec3 == check3 ) ;
   }
 
   {

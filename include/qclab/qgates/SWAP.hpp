@@ -75,6 +75,22 @@ namespace qclab {
         }
 
         // apply
+        void apply( Op op , const int nbQubits , std::vector< T >& vector ,
+                    const int offset = 0 ) const override {
+          assert( nbQubits >= 2 ) ;
+          assert( vector.size() == 1 << nbQubits ) ;
+          const int qubit0 = qubits_[0] + offset ;
+          const int qubit1 = qubits_[1] + offset ;
+          assert( qubit0 < nbQubits ) ; assert( qubit1 < nbQubits ) ;
+          // 3x CNOT
+          qclab::qgates::CNOT< T > cnot01( qubit0 , qubit1 ) ;
+          qclab::qgates::CNOT< T > cnot10( qubit1 , qubit0 ) ;
+          cnot01.apply( op , nbQubits , vector ) ;
+          cnot10.apply( op , nbQubits , vector ) ;
+          cnot01.apply( op , nbQubits , vector ) ;
+        }
+
+        // apply
         void apply( Side side , Op op , const int nbQubits ,
                     qclab::dense::SquareMatrix< T >& matrix ,
                     const int offset = 0 ) const override {
