@@ -1,4 +1,4 @@
-# QCLAB++
+# QCLAB++ [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5160682.svg)](https://doi.org/10.5281/zenodo.5160682)
 
 <p align="center"><img src="doc/doxygen/images/logo200x200.png?raw=true" /></p>
 
