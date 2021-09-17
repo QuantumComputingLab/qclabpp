@@ -21,8 +21,8 @@ namespace qclab {
       public:
         /// Real value type of this controlled X-rotation gate.
         using real_type = qclab::real_t< T > ;
-        /// Quantum angle type of this controlled X-rotation gate.
-        using angle_type = qclab::QAngle< real_type > ;
+        /// Quantum rotation type of this controlled X-rotation gate.
+        using rotation_type = qclab::QRotation< real_type > ;
         /// Gate type of the controlled 1-qubit gate of this 2-qubit gate.
         using gate_type = RotationX< T > ;
 
@@ -38,18 +38,18 @@ namespace qclab {
 
         /**
          * \brief Constructs a controlled X-rotation gate with given control
-         *        qubit `control`, target qubit `target`, quantum angle
-         *        `angle` = \f$\theta/2\f$, and control state `controlState`.
+         *        qubit `control`, target qubit `target`, quantum rotation
+         *        `rot` = \f$\theta\f$, and control state `controlState`.
          *        The default control state is 1.
          */
         CRotationX( const int control , const int target ,
-                    const angle_type& angle , const int controlState = 1 )
+                    const rotation_type& rot , const int controlState = 1 )
         : QControlledGate2< T >( control , controlState )
-        , gate_( std::make_unique< RotationX< T > >( target , angle ) )
+        , gate_( std::make_unique< RotationX< T > >( target , rot ) )
         {
           assert( control >= 0 ) ; assert( target >= 0 ) ;
           assert( control != target ) ;
-        } // CRotationX(control,target,angle,controlState)
+        } // CRotationX(control,target,rot,controlState)
 
         /**
          * \brief Constructs a controlled X-rotation gate with given control
@@ -129,7 +129,7 @@ namespace qclab {
         inline bool equals( const QObject< T >& other ) const override {
           using CRX = CRotationX< T > ;
           if ( const CRX* p = dynamic_cast< const CRX* >( &other ) ) {
-            if ( p->angle() != this->angle() ) return false ;
+            if ( p->rotation() != this->rotation() ) return false ;
             if ( p->controlState() != this->controlState() ) return false ;
             return ( ( p->control() < p->target() ) &&
                      ( this->control() < this->target() ) ) ||
@@ -166,11 +166,11 @@ namespace qclab {
         inline void makeVariable() { gate_->makeVariable() ; }
 
         /**
-         * \brief Returns the quantum angle \f$\theta/2\f$ of this controlled
+         * \brief Returns the quantum rotation \f$\theta\f$ of this controlled
          *        X-rotation gate.
          */
-        inline const angle_type& angle() const {
-          return gate_->angle() ;
+        inline const rotation_type& rotation() const {
+          return gate_->rotation() ;
         }
 
         /**
@@ -199,9 +199,9 @@ namespace qclab {
 
         /**
          * \brief Updates this controlled X-rotation gate with the given quantum
-         *        angle `angle` = \f$\theta/2\f$.
+         *        rotation `rot` = \f$\theta\f$.
          */
-        void update( const angle_type& angle ) { gate_->update( angle ) ; }
+        void update( const rotation_type& rot ) { gate_->update( rot ) ; }
 
         /**
          * \brief Updates this controlled X-rotation gate with the given value

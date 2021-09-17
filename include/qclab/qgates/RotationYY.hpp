@@ -20,8 +20,8 @@ namespace qclab {
       public:
         /// Real value type of this 2-qubit Y-rotation gate.
         using real_type = qclab::real_t< T > ;
-        /// Quantum angle type of this 2-qubit Y-rotation gate.
-        using angle_type = qclab::QAngle< real_type > ;
+        /// Quantum rotation type of this 2-qubit Y-rotation gate.
+        using rotation_type = qclab::QRotation< real_type > ;
 
         /**
          * \brief Default constructor. Constructs a 2-qubit Y-rotation gate on
@@ -33,11 +33,11 @@ namespace qclab {
 
         /**
          * \brief Constructs a 2-qubit Y-rotation gate on qubits 0 and 1 with
-         *        the given quantum angle `angle` = \f$\theta/2\f$.
+         *        the given quantum rotation `rot` = \f$\theta\f$.
          */
-        RotationYY( const angle_type& angle )
-        : QRotationGate2< T >( 0 , 1 , angle )
-        { } // RotationYY(angle)
+        RotationYY( const rotation_type& rot )
+        : QRotationGate2< T >( 0 , 1 , rot )
+        { } // RotationYY(rot)
 
         /**
          * \brief Constructs a 2-qubit Y-rotation gate on qubits 0 and 1 with
@@ -58,13 +58,13 @@ namespace qclab {
 
         /**
          * \brief Constructs a 2-qubit Y-rotation gate on the given qubits
-         *        `qubits` with quantum angle `angle` = \f$\theta/2\f$ and
+         *        `qubits` with quantum rotation `rot` = \f$\theta\f$ and
          *        flag `fixed`. The default value of `fixed` is false.
          */
-        RotationYY( const int* qubits , const angle_type& angle ,
+        RotationYY( const int* qubits , const rotation_type& rot ,
                     const bool fixed = false )
-        : QRotationGate2< T >( qubits , angle , fixed )
-        { } // RotationYY(qubits,angle,fixed)
+        : QRotationGate2< T >( qubits , rot , fixed )
+        { } // RotationYY(qubits,rot,fixed)
 
         /**
          * \brief Constructs a 2-qubit Y-rotation gate on the given qubits
@@ -89,14 +89,14 @@ namespace qclab {
 
         /**
          * \brief Constructs a 2-qubit Y-rotation gate on the given
-         *        qubits `qubit0` and `qubit1` with quantum angle
-         *        `angle` = \f$\theta/2\f$ and flag `fixed`.
+         *        qubits `qubit0` and `qubit1` with quantum rotation
+         *        `rot` = \f$\theta\f$ and flag `fixed`.
          *        The default value of `fixed` is false.
          */
         RotationYY( const int qubit0 , const int qubit1 ,
-                    const angle_type& angle , const bool fixed = false )
-        : QRotationGate2< T >( qubit0 , qubit1 , angle , fixed )
-        { } // RotationYY(qubit0,qubit1,angle,fixed)
+                    const rotation_type& rot , const bool fixed = false )
+        : QRotationGate2< T >( qubit0 , qubit1 , rot , fixed )
+        { } // RotationYY(qubit0,qubit1,rot,fixed)
 
         /**
          * \brief Constructs a 2-qubit Y-rotation gate on the given qubits
@@ -164,12 +164,12 @@ namespace qclab {
         inline bool equals( const QObject< T >& other ) const override {
           using Y = RotationYY< T > ;
           if ( const Y* p = dynamic_cast< const Y* >( &other ) ) {
-            return ( p->angle() == this->angle() ) ;
+            return ( p->rotation() == this->rotation() ) ;
           }
           return false ;
         }
 
-        // angle
+        // rotation
 
         // theta
 
@@ -177,7 +177,7 @@ namespace qclab {
 
         // sin
 
-        // update(angle)
+        // update(rot)
 
         // update(theta)
 
@@ -186,14 +186,14 @@ namespace qclab {
         /// Multiplies `rhs` to this 2-qubit Y-rotation gate.
         inline RotationYY< T >& operator*=( const RotationYY< T >& rhs ) {
           assert( this->qubit() == rhs.qubit() ) ;
-          this->update( this->angle() + rhs.angle() ) ;
+          this->rotation_ *= rhs.rotation() ;
           return *this ;
         }
 
         /// Multiplies the inverse of `rhs` to this 2-qubit Y-rotation gate.
         inline RotationYY< T >& operator/=( const RotationYY< T >& rhs ) {
           assert( this->qubit() == rhs.qubit() ) ;
-          this->update( this->angle() - rhs.angle() ) ;
+          this->rotation_ /= rhs.rotation() ;
           return *this ;
         }
 
@@ -215,8 +215,8 @@ namespace qclab {
 
         /// Returns the inverse this 2-qubit Y-rotation gate.
         inline RotationYY< T > inv() const {
-          RotationYY< T > rotation( -this->angle() ) ;
-          return rotation ;
+          RotationYY< T > gate( this->rotation().inv() ) ;
+          return gate ;
         }
 
     } ; // class RotationYY

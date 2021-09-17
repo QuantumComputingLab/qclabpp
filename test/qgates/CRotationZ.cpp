@@ -104,18 +104,18 @@ void test_qclab_qgates_CRotationZ() {
     crotz.makeVariable() ;
     EXPECT_FALSE( crotz.fixed() ) ;
 
-    // angle, theta, sin, cos
-    qclab::QAngle< R > angle ;
-    EXPECT_TRUE( crotz.angle() == angle ) ;
+    // rotation, theta, sin, cos
+    qclab::QRotation< R > rot ;
+    EXPECT_TRUE( crotz.rotation() == rot ) ;
     EXPECT_EQ( crotz.theta() , 0 ) ;
     EXPECT_EQ( crotz.cos() , 1 ) ;
     EXPECT_EQ( crotz.sin() , 0 ) ;
 
-    // update(angle)
+    // update(rot)
     const R cos = std::cos( pi/4 ) ;
     const R sin = std::sin( pi/4 ) ;
-    angle.update( pi/4 ) ;
-    crotz.update( angle ) ;
+    rot.update( pi/2 ) ;
+    crotz.update( rot ) ;
     EXPECT_NEAR( crotz.theta() , pi/2 , eps ) ;
     EXPECT_NEAR( crotz.cos() , cos , eps ) ;
     EXPECT_NEAR( crotz.sin() , sin , eps ) ;
@@ -135,8 +135,8 @@ void test_qclab_qgates_CRotationZ() {
 
   {
     const R theta = pi/4 ;
-    qclab::QAngle< R >  angle( theta/2 ) ;
-    qclab::qgates::CRotationZ< T >  crotz( 1 , 3 , angle ) ;
+    qclab::QRotation< R >  rot( theta ) ;
+    qclab::qgates::CRotationZ< T >  crotz( 1 , 3 , rot ) ;
 
     EXPECT_EQ( crotz.nbQubits() , 2 ) ;      // nbQubits
     EXPECT_FALSE( crotz.fixed() ) ;          // fixed

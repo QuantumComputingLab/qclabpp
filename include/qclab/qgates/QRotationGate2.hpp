@@ -23,8 +23,8 @@ namespace qclab {
       public:
         /// Real value type of this 2-qubit rotation gate.
         using real_type = qclab::real_t< T > ;
-        /// Quantum angle type of this 2-qubit rotation gate.
-        using angle_type = qclab::QAngle< real_type > ;
+        /// Quantum rotation type of this 2-qubit rotation gate.
+        using rotation_type = qclab::QRotation< real_type > ;
 
         /**
          * \brief Default constructor. Constructs a 2-qubit rotation gate on
@@ -38,16 +38,16 @@ namespace qclab {
 
         /**
          * \brief Constructs a 2-qubit rotation gate on the given qubits
-         *        `qubits` with quantum angle `angle` = \f$\theta/2\f$ and
+         *        `qubits` with quantum rotation `rot` = \f$\theta\f$ and
          *        flag `fixed`. The default value of `fixed` is false.
          */
-        QRotationGate2( const int* qubits , const angle_type& angle ,
+        QRotationGate2( const int* qubits , const rotation_type& rot ,
                         const bool fixed = false )
-        : rotation_( angle )
+        : rotation_( rot )
         , QAdjustable( fixed )
         {
           setQubits( qubits ) ;
-        } // QRotationGate2(qubits,angle,fixed)
+        } // QRotationGate2(qubits,rot,fixed)
 
         /**
          * \brief Constructs a 2-qubit rotation gate on the given qubits
@@ -78,18 +78,18 @@ namespace qclab {
 
         /**
          * \brief Constructs a 2-qubit rotation gate on the given
-         *        qubits `qubit0` and `qubit1` with quantum angle
-         *        `angle` = \f$\theta/2\f$ and flag `fixed`.
+         *        qubits `qubit0` and `qubit1` with quantum rotation
+         *        `rot` = \f$\theta\f$ and flag `fixed`.
          *        The default value of `fixed` is false.
          */
         QRotationGate2( const int qubit0 , const int qubit1 ,
-                        const angle_type& angle , const bool fixed = false )
-        : rotation_( angle )
+                        const rotation_type& rot , const bool fixed = false )
+        : rotation_( rot )
         , QAdjustable( fixed )
         {
           const int qubits[] = { qubit0 , qubit1 } ;
           setQubits( &qubits[0] ) ;
-        } // QRotationGate2(qubit0,qubit1,angle,fixed)
+        } // QRotationGate2(qubit0,qubit1,rot,fixed)
 
         /**
          * \brief Constructs a 2-qubit rotation gate on the given qubits
@@ -161,8 +161,8 @@ namespace qclab {
 
         // equals
 
-        /// Returns the quantum angle \f$\theta/2\f$ of this rotation gate.
-        inline const angle_type& angle() const { return rotation_.angle() ; }
+        /// Returns the quantum rotation \f$\theta\f$ of this rotation gate.
+        inline const rotation_type& rotation() const { return rotation_ ; }
 
         /// Returns the numerical value \f$\theta\f$ of this rotation gate.
         inline real_type theta() const { return rotation_.theta() ; }
@@ -174,12 +174,12 @@ namespace qclab {
         inline real_type sin() const { return rotation_.sin() ; }
 
         /**
-         * \brief Updates this rotation gate with the given quantum angle
-         *        `angle` = \f$\theta/2\f$.
+         * \brief Updates this rotation gate with the given quantum rotation
+         *        `rot` = \f$\theta\f$.
          */
-        void update( const angle_type& angle ) {
+        void update( const rotation_type& rot ) {
           assert( !fixed() ) ;
-          rotation_.update( angle ) ;
+          rotation_ = rot ;
         }
 
         /**
@@ -204,7 +204,7 @@ namespace qclab {
         /// Qubits of this 2-qubit rotation gate.
         std::array< int , 2 >   qubits_ ;
         /// Quantum rotation of this 2-qubit rotation gate.
-        QRotation< real_type >  rotation_ ;
+        rotation_type           rotation_ ;
 
     } ; // class QRotationGate2
 

@@ -38,9 +38,9 @@ void test_qclab_qgates_RotationXX() {
     Rxx.makeVariable() ;
     EXPECT_FALSE( Rxx.fixed() ) ;
 
-    // update(angle)
-    qclab::QAngle< R >  new_angle( 0.5 ) ;
-    Rxx.update( new_angle ) ;
+    // update(rot)
+    qclab::QRotation< R >  new_rot( 1 ) ;
+    Rxx.update( new_rot ) ;
     EXPECT_NEAR( Rxx.theta() , 1 , eps ) ;
     EXPECT_NEAR( Rxx.cos() , std::cos( 0.5 ) , eps ) ;
     EXPECT_NEAR( Rxx.sin() , std::sin( 0.5 ) , eps ) ;
@@ -101,8 +101,8 @@ void test_qclab_qgates_RotationXX() {
   // constructors without qubits
   //
   {
-    qclab::QAngle< R >              angle( pi/4 ) ;
-    qclab::qgates::RotationXX< T >  Rxx( angle ) ;
+    qclab::QRotation< R >           rot( pi/2 ) ;
+    qclab::qgates::RotationXX< T >  Rxx( rot ) ;
 
     EXPECT_EQ( Rxx.nbQubits() , 2 ) ;                    // nbQubits
     EXPECT_FALSE( Rxx.fixed() ) ;                        // fixed
@@ -157,8 +157,8 @@ void test_qclab_qgates_RotationXX() {
   //
   {
     int qbits[2] = { 3 , 5 } ;
-    qclab::QAngle< R >              angle( pi/4 ) ;
-    qclab::qgates::RotationXX< T >  Rxx( &qbits[0] , angle ) ;
+    qclab::QRotation< R >           rot( pi/2 ) ;
+    qclab::qgates::RotationXX< T >  Rxx( &qbits[0] , rot ) ;
 
     EXPECT_EQ( Rxx.nbQubits() , 2 ) ;                    // nbQubits
     EXPECT_FALSE( Rxx.fixed() ) ;                        // fixed
@@ -216,8 +216,8 @@ void test_qclab_qgates_RotationXX() {
   {
     int qubit0 = 3 ;
     int qubit1 = 5 ;
-    qclab::QAngle< R >              angle( pi/4 ) ;
-    qclab::qgates::RotationXX< T >  Rxx( qubit0 , qubit1 , angle ) ;
+    qclab::QRotation< R >           rot( pi/2 ) ;
+    qclab::qgates::RotationXX< T >  Rxx( qubit0 , qubit1 , rot ) ;
 
     EXPECT_EQ( Rxx.nbQubits() , 2 ) ;                    // nbQubits
     EXPECT_FALSE( Rxx.fixed() ) ;                        // fixed
@@ -272,12 +272,14 @@ void test_qclab_qgates_RotationXX() {
 
   {
     const R theta1 = pi/2 ;
-    const qclab::QAngle< R >  angle1( theta1 ) ;
-    qclab::qgates::RotationXX< T >  R1( 0 , 1 , angle1 ) ;
+    const qclab::QAngle< R >        angle1( theta1 ) ;
+    const qclab::QRotation< R >     rot1( angle1 ) ;
+    qclab::qgates::RotationXX< T >  R1( 0 , 1 , rot1 ) ;
 
     const R theta2 = pi/3 ;
-    const qclab::QAngle< R >  angle2( theta2 ) ;
-    qclab::qgates::RotationXX< T >  R2( 0 , 1 , angle2 ) ;
+    const qclab::QAngle< R >        angle2( theta2 ) ;
+    const qclab::QRotation< R >     rot2( angle2 ) ;
+    qclab::qgates::RotationXX< T >  R2( 0 , 1 , rot2 ) ;
 
     // operator *=
     R1 *= R2 ;
@@ -295,12 +297,14 @@ void test_qclab_qgates_RotationXX() {
 
   {
     const R theta1 = pi/2 ;
-    const qclab::QAngle< R >  angle1( theta1 ) ;
-    qclab::qgates::RotationXX< T >  R1( 0 , 1 , angle1 ) ;
+    const qclab::QAngle< R >        angle1( theta1 ) ;
+    const qclab::QRotation< R >     rot1( angle1 ) ;
+    qclab::qgates::RotationXX< T >  R1( 0 , 1 , rot1 ) ;
 
     const R theta2 = pi/3 ;
-    const qclab::QAngle< R >  angle2( theta2 ) ;
-    qclab::qgates::RotationXX< T >  R2( 0 , 1 , angle2 ) ;
+    const qclab::QAngle< R >        angle2( theta2 ) ;
+    const qclab::QRotation< R >     rot2( angle2 ) ;
+    qclab::qgates::RotationXX< T >  R2( 0 , 1 , rot2 ) ;
 
     // operator /=
     R1 /= R2 ;
@@ -318,12 +322,14 @@ void test_qclab_qgates_RotationXX() {
 
   {
     const R theta1 = pi/2 ;
-    const qclab::QAngle< R >  angle1( theta1 ) ;
-    qclab::qgates::RotationXX< T >  R1( 0 , 1 , angle1 ) ;
+    const qclab::QAngle< R >        angle1( theta1 ) ;
+    const qclab::QRotation< R >     rot1( angle1 ) ;
+    qclab::qgates::RotationXX< T >  R1( 0 , 1 , rot1 ) ;
 
     const R theta2 = pi/3 ;
-    const qclab::QAngle< R >  angle2( theta2 ) ;
-    qclab::qgates::RotationXX< T >  R2( 0 , 1 , angle2 ) ;
+    const qclab::QAngle< R >        angle2( theta2 ) ;
+    const qclab::QRotation< R >     rot2( angle2 ) ;
+    qclab::qgates::RotationXX< T >  R2( 0 , 1 , rot2 ) ;
 
     // operator *
     qclab::qgates::RotationXX< T > R12 = R1 * R2 ;
@@ -338,12 +344,14 @@ void test_qclab_qgates_RotationXX() {
 
   {
     const R theta1 = pi/2 ;
-    const qclab::QAngle< R >  angle1( theta1 ) ;
-    qclab::qgates::RotationXX< T >  R1( 0 , 1 , angle1 ) ;
+    const qclab::QAngle< R >        angle1( theta1 ) ;
+    const qclab::QRotation< R >     rot1( angle1 ) ;
+    qclab::qgates::RotationXX< T >  R1( 0 , 1 , rot1 ) ;
 
     const R theta2 = pi/3 ;
-    const qclab::QAngle< R >  angle2( theta2 ) ;
-    qclab::qgates::RotationXX< T >  R2( 0 , 1 , angle2 ) ;
+    const qclab::QAngle< R >        angle2( theta2 ) ;
+    const qclab::QRotation< R >     rot2( angle2 ) ;
+    qclab::qgates::RotationXX< T >  R2( 0 , 1 , rot2 ) ;
 
     // operator /
     qclab::qgates::RotationXX< T > R12 = R1 / R2 ;
@@ -358,8 +366,9 @@ void test_qclab_qgates_RotationXX() {
 
   {
     const R theta1 = pi/2 ;
-    const qclab::QAngle< R >  angle1( theta1 ) ;
-    qclab::qgates::RotationXX< T >  R1( 0 , 1 , angle1 ) ;
+    const qclab::QAngle< R >        angle1( theta1 ) ;
+    const qclab::QRotation< R >     rot1( angle1 ) ;
+    qclab::qgates::RotationXX< T >  R1( 0 , 1 , rot1 ) ;
     R cos   = R1.cos() ;
     R sin   = R1.sin() ;
     R theta = R1.theta() ;
