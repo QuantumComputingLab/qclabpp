@@ -3,9 +3,6 @@ cmake_minimum_required( VERSION 3.16 FATAL_ERROR )
 # project
 project( QCLABPP VERSION 0.1.2 LANGUAGES CXX )
 
-# openmp
-find_package( OpenMP )
-
 # fetch content
 include( FetchContent )
 
@@ -15,7 +12,7 @@ FetchContent_Declare( gtest
 )
 FetchContent_MakeAvailable( gtest )
 
-# qclab/src
+# qclab/include
 add_library( qclabpp INTERFACE )
 target_include_directories( qclabpp INTERFACE ${PROJECT_SOURCE_DIR}/include )
 target_compile_features( qclabpp INTERFACE cxx_std_17 )
@@ -25,6 +22,12 @@ add_subdirectory( test )
 
 # qclab/examples
 add_subdirectory( examples )
+
+# openmp
+find_package( OpenMP )
+if( TARGET OpenMP::OpenMP_CXX )
+  target_link_libraries( qclabpp INTERFACE OpenMP::OpenMP_CXX )
+endif()
 
 # documentation
 find_package( Doxygen )
