@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_QAdjustable_hpp
-#define qclab_QAdjustable_hpp
+#pragma once
 
 namespace qclab {
 
@@ -39,6 +38,4 @@ namespace qclab {
   } ; // clase QAdjustable
 
 } // namespace qclab
-
-#endif
 

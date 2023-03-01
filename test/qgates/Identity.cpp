@@ -42,6 +42,46 @@ void test_qclab_qgates_Identity() {
   EXPECT_TRUE( I == I2 ) ;
   EXPECT_FALSE( I != I2 ) ;
 
+  // apply
+  {
+    using V = std::vector< T > ;
+    const V v1 = { 0 , 1 } ;
+
+    qclab::qgates::Identity< T >  I0( 0 ) ;
+
+    // nbQubits = 1
+    auto vec1 = v1 ;
+    I0.apply( qclab::Op::NoTrans , 1 , vec1 ) ;
+    V check1 = { 0 , 1 } ;
+    EXPECT_TRUE( vec1 == check1 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec1 = v1 ; T* vec1_ = vec1.data() ;
+    #pragma omp target data map(tofrom:vec1_[0:2])
+    { I0.apply_device( qclab::Op::NoTrans , 1 , vec1_ ) ; }
+    EXPECT_TRUE( vec1 == check1 ) ;
+  #endif
+
+    vec1 = v1 ;
+    I0.apply( qclab::Op::Trans , 1 , vec1 ) ;
+    EXPECT_TRUE( vec1 == check1 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec1 = v1 ;
+    #pragma omp target data map(tofrom:vec1_[0:2])
+    { I0.apply_device( qclab::Op::Trans , 1 , vec1_ ) ; }
+    EXPECT_TRUE( vec1 == check1 ) ;
+  #endif
+
+    vec1 = v1 ;
+    I0.apply( qclab::Op::ConjTrans , 1 , vec1 ) ;
+    EXPECT_TRUE( vec1 == check1 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec1 = v1 ;
+    #pragma omp target data map(tofrom:vec1_[0:2])
+    { I0.apply_device( qclab::Op::ConjTrans , 1 , vec1_ ) ; }
+    EXPECT_TRUE( vec1 == check1 ) ;
+  #endif
+  }
+
 }
 
 

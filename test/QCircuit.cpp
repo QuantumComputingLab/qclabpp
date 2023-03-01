@@ -12,7 +12,7 @@ void test_qclab_QCircuit() {
 
   using R = qclab::real_t< T > ;
   const R pi = 4 * std::atan(1) ;
-  const R eps = std::numeric_limits< R >::epsilon() ;
+  const R tol = 10 * std::numeric_limits< R >::epsilon() ;
 
   using O = std::unique_ptr< qclab::QObject< T > > ;
   using H = qclab::qgates::Hadamard< T > ;
@@ -177,16 +177,16 @@ void test_qclab_QCircuit() {
     V check1 = { T(0, 1.414213562373095) , T(0,-5.656854249492380) } ;
     EXPECT_EQ( std::real( vec1[0] ) , 0 ) ;
     EXPECT_EQ( std::real( vec1[1] ) , 0 ) ;
-    EXPECT_NEAR( std::imag( vec1[0] ) , std::imag( check1[0] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec1[1] ) , std::imag( check1[1] ) , 10*eps ) ;
+    EXPECT_NEAR( std::imag( vec1[0] ) , std::imag( check1[0] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec1[1] ) , std::imag( check1[1] ) , tol ) ;
 
     vec1 = v1 ;
     circuit1.apply( qclab::Op::ConjTrans , 1 , vec1 ) ;
     check1 = { T(0, 5.656854249492380) , T(0, 1.414213562373095) } ;
     EXPECT_EQ( std::real( vec1[0] ) , 0 ) ;
     EXPECT_EQ( std::real( vec1[1] ) , 0 ) ;
-    EXPECT_NEAR( std::imag( vec1[0] ) , std::imag( check1[0] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec1[1] ) , std::imag( check1[1] ) , 10*eps ) ;
+    EXPECT_NEAR( std::imag( vec1[0] ) , std::imag( check1[0] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec1[1] ) , std::imag( check1[1] ) , tol ) ;
 
     // apply (nbQubits = 2)
     auto vec2 = v2 ;
@@ -197,10 +197,10 @@ void test_qclab_QCircuit() {
     EXPECT_EQ( std::real( vec2[1] ) , 0 ) ;
     EXPECT_EQ( std::real( vec2[2] ) , 0 ) ;
     EXPECT_EQ( std::real( vec2[3] ) , 0 ) ;
-    EXPECT_NEAR( std::imag( vec2[0] ) , std::imag( check2[0] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec2[1] ) , std::imag( check2[1] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec2[2] ) , std::imag( check2[2] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec2[3] ) , std::imag( check2[3] ) , 10*eps ) ;
+    EXPECT_NEAR( std::imag( vec2[0] ) , std::imag( check2[0] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec2[1] ) , std::imag( check2[1] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec2[2] ) , std::imag( check2[2] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec2[3] ) , std::imag( check2[3] ) , tol ) ;
 
     vec2 = v2 ;
     circuit1.apply( qclab::Op::ConjTrans , 2 , vec2 ) ;
@@ -210,10 +210,10 @@ void test_qclab_QCircuit() {
     EXPECT_EQ( std::real( vec2[1] ) , 0 ) ;
     EXPECT_EQ( std::real( vec2[2] ) , 0 ) ;
     EXPECT_EQ( std::real( vec2[3] ) , 0 ) ;
-    EXPECT_NEAR( std::imag( vec2[0] ) , std::imag( check2[0] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec2[1] ) , std::imag( check2[1] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec2[2] ) , std::imag( check2[2] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec2[3] ) , std::imag( check2[3] ) , 10*eps ) ;
+    EXPECT_NEAR( std::imag( vec2[0] ) , std::imag( check2[0] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec2[1] ) , std::imag( check2[1] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec2[2] ) , std::imag( check2[2] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec2[3] ) , std::imag( check2[3] ) , tol ) ;
   }
 
   {
@@ -231,8 +231,8 @@ void test_qclab_QCircuit() {
     V check = { T(0, 1.414213562373095) , T(0,-5.656854249492380) } ;
     EXPECT_EQ( std::real( vec[0] ) , 0 ) ;
     EXPECT_EQ( std::real( vec[1] ) , 0 ) ;
-    EXPECT_NEAR( std::imag( vec[0] ) , std::imag( check[0] ) , 10*eps ) ;
-    EXPECT_NEAR( std::imag( vec[1] ) , std::imag( check[1] ) , 10*eps ) ;
+    EXPECT_NEAR( std::imag( vec[0] ) , std::imag( check[0] ) , tol ) ;
+    EXPECT_NEAR( std::imag( vec[1] ) , std::imag( check[1] ) , tol ) ;
   }
 
   {

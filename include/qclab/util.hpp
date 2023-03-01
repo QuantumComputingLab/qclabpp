@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen 2021.
 
-#ifndef qclab_util_hpp
-#define qclab_util_hpp
+#pragma once
 
 #include <cassert>
 #include <complex>
@@ -128,6 +127,4 @@ namespace qclab {
  }
 
 } // namespace qclab
-
-#endif
 

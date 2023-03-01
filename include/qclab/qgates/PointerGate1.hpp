@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_qgates_PointerGate1_hpp
-#define qclab_qgates_PointerGate1_hpp
+#pragma once
 
 #include "qclab/qgates/QGate1.hpp"
 
@@ -98,6 +97,4 @@ namespace qclab {
   } // namespace qgates
 
 } // namespace qclab
-
-#endif
 

@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen 2021.
 
-#ifndef qclab_dense_kron_hpp
-#define qclab_dense_kron_hpp
+#pragma once
 
 #include "qclab/dense/SquareMatrix.hpp"
 
@@ -50,6 +49,4 @@ namespace qclab {
   } // namespace dense
 
 } // namespace qclab
-
-#endif
 

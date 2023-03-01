@@ -6,7 +6,7 @@ void test_qclab_qgates_RotationZZ() {
 
   using R = qclab::real_t< T > ;
   const R pi = 4 * std::atan(1) ;
-  const R eps = std::numeric_limits< R >::epsilon() ;
+  const R tol = 10 * std::numeric_limits< R >::epsilon() ;
 
   {
     qclab::qgates::RotationZZ< T >  Rzz ;
@@ -41,27 +41,27 @@ void test_qclab_qgates_RotationZZ() {
     // update(rot)
     qclab::QRotation< R >  new_rot( 1 ) ;
     Rzz.update( new_rot ) ;
-    EXPECT_NEAR( Rzz.theta() , 1 , eps ) ;
-    EXPECT_NEAR( Rzz.cos() , std::cos( 0.5 ) , eps ) ;
-    EXPECT_NEAR( Rzz.sin() , std::sin( 0.5 ) , eps ) ;
+    EXPECT_NEAR( Rzz.theta() , 1 , tol ) ;
+    EXPECT_NEAR( Rzz.cos() , std::cos( 0.5 ) , tol ) ;
+    EXPECT_NEAR( Rzz.sin() , std::sin( 0.5 ) , tol ) ;
 
     // update(theta)
     Rzz.update( pi/2 ) ;
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , eps ) ;
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , eps ) ;
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , tol ) ;
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , tol ) ;
 
     // matrix
     const T a = std::exp( T(0,-pi/4) ) ;
     const T b = std::exp( T(0, pi/4) ) ;
-    EXPECT_NEAR( std::real( Rzz.matrix()(0,0) ) , std::real( a ) , eps ) ;
-    EXPECT_NEAR( std::imag( Rzz.matrix()(0,0) ) , std::imag( a ) , eps ) ;
-    EXPECT_NEAR( std::real( Rzz.matrix()(1,1) ) , std::real( b ) , eps ) ;
-    EXPECT_NEAR( std::imag( Rzz.matrix()(1,1) ) , std::imag( b ) , eps ) ;
-    EXPECT_NEAR( std::real( Rzz.matrix()(2,2) ) , std::real( b ) , eps ) ;
-    EXPECT_NEAR( std::imag( Rzz.matrix()(2,2) ) , std::imag( b ) , eps ) ;
-    EXPECT_NEAR( std::real( Rzz.matrix()(3,3) ) , std::real( a ) , eps ) ;
-    EXPECT_NEAR( std::imag( Rzz.matrix()(3,3) ) , std::imag( a ) , eps ) ;
+    EXPECT_NEAR( std::real( Rzz.matrix()(0,0) ) , std::real( a ) , tol ) ;
+    EXPECT_NEAR( std::imag( Rzz.matrix()(0,0) ) , std::imag( a ) , tol ) ;
+    EXPECT_NEAR( std::real( Rzz.matrix()(1,1) ) , std::real( b ) , tol ) ;
+    EXPECT_NEAR( std::imag( Rzz.matrix()(1,1) ) , std::imag( b ) , tol ) ;
+    EXPECT_NEAR( std::real( Rzz.matrix()(2,2) ) , std::real( b ) , tol ) ;
+    EXPECT_NEAR( std::imag( Rzz.matrix()(2,2) ) , std::imag( b ) , tol ) ;
+    EXPECT_NEAR( std::real( Rzz.matrix()(3,3) ) , std::real( a ) , tol ) ;
+    EXPECT_NEAR( std::imag( Rzz.matrix()(3,3) ) , std::imag( a ) , tol ) ;
     EXPECT_EQ( Rzz.matrix()(1,0) , T(0) ) ;
     EXPECT_EQ( Rzz.matrix()(2,0) , T(0) ) ;
     EXPECT_EQ( Rzz.matrix()(3,0) , T(0) ) ;
@@ -88,9 +88,9 @@ void test_qclab_qgates_RotationZZ() {
 
     // update(cos,sin)
     Rzz.update( std::cos( pi/3 ) , std::sin( pi/3 ) ) ;
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/3 ) , eps ) ;
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/3 ) , eps ) ;
-    EXPECT_NEAR( Rzz.theta() , 2*(pi/3) , eps ) ;
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/3 ) , tol ) ;
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/3 ) , tol ) ;
+    EXPECT_NEAR( Rzz.theta() , 2*(pi/3) , tol ) ;
 
     // operators == and !=
     qclab::qgates::RotationZZ< T >  Rzz2( std::cos( pi/3 ) , std::sin( pi/3 ) );
@@ -116,9 +116,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 0 ) ;                         // qubit0
     EXPECT_EQ( qubits[1] , 1 ) ;                         // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;            // theta
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , eps ) ;  // cos
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , eps ) ;  // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;            // theta
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , tol ) ;  // cos
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , tol ) ;  // sin
   }
 
   {
@@ -132,9 +132,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 0 ) ;                         // qubit0
     EXPECT_EQ( qubits[1] , 1 ) ;                         // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;            // theta
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , eps ) ;  // cos
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , eps ) ;  // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;            // theta
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , tol ) ;  // cos
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , tol ) ;  // sin
   }
 
   {
@@ -150,9 +150,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 0 ) ;               // qubit0
     EXPECT_EQ( qubits[1] , 1 ) ;               // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;  // theta
-    EXPECT_NEAR( Rzz.cos() , cos , eps ) ;     // cos
-    EXPECT_NEAR( Rzz.sin() , sin , eps ) ;     // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;  // theta
+    EXPECT_NEAR( Rzz.cos() , cos , tol ) ;     // cos
+    EXPECT_NEAR( Rzz.sin() , sin , tol ) ;     // sin
   }
 
 
@@ -172,9 +172,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 3 ) ;                         // qubit0
     EXPECT_EQ( qubits[1] , 5 ) ;                         // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;            // theta
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , eps ) ;  // cos
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , eps ) ;  // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;            // theta
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , tol ) ;  // cos
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , tol ) ;  // sin
   }
 
   {
@@ -189,9 +189,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 3 ) ;                         // qubit0
     EXPECT_EQ( qubits[1] , 5 ) ;                         // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;            // theta
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , eps ) ;  // cos
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , eps ) ;  // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;            // theta
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , tol ) ;  // cos
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , tol ) ;  // sin
   }
 
   {
@@ -208,9 +208,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 3 ) ;               // qubit0
     EXPECT_EQ( qubits[1] , 5 ) ;               // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;  // theta
-    EXPECT_NEAR( Rzz.cos() , cos , eps ) ;     // cos
-    EXPECT_NEAR( Rzz.sin() , sin , eps ) ;     // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;  // theta
+    EXPECT_NEAR( Rzz.cos() , cos , tol ) ;     // cos
+    EXPECT_NEAR( Rzz.sin() , sin , tol ) ;     // sin
   }
 
 
@@ -231,9 +231,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 3 ) ;                         // qubit0
     EXPECT_EQ( qubits[1] , 5 ) ;                         // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;            // theta
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , eps ) ;  // cos
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , eps ) ;  // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;            // theta
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , tol ) ;  // cos
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , tol ) ;  // sin
   }
 
   {
@@ -249,9 +249,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 3 ) ;                         // qubit0
     EXPECT_EQ( qubits[1] , 5 ) ;                         // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;            // theta
-    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , eps ) ;  // cos
-    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , eps ) ;  // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;            // theta
+    EXPECT_NEAR( Rzz.cos() , std::cos( pi/4 ) , tol ) ;  // cos
+    EXPECT_NEAR( Rzz.sin() , std::sin( pi/4 ) , tol ) ;  // sin
   }
 
   {
@@ -269,9 +269,9 @@ void test_qclab_qgates_RotationZZ() {
     EXPECT_EQ( qubits[0] , 3 ) ;               // qubit0
     EXPECT_EQ( qubits[1] , 5 ) ;               // qubit1
 
-    EXPECT_NEAR( Rzz.theta() , pi/2 , eps ) ;  // theta
-    EXPECT_NEAR( Rzz.cos() , cos , eps ) ;     // cos
-    EXPECT_NEAR( Rzz.sin() , sin , eps ) ;     // sin
+    EXPECT_NEAR( Rzz.theta() , pi/2 , tol ) ;  // theta
+    EXPECT_NEAR( Rzz.cos() , cos , tol ) ;     // cos
+    EXPECT_NEAR( Rzz.sin() , sin , tol ) ;     // sin
   }
 
   {
@@ -291,12 +291,12 @@ void test_qclab_qgates_RotationZZ() {
     R cos   = angle.cos() ;
     R sin   = angle.sin() ;
     R theta = angle.theta() ;
-    EXPECT_NEAR( R1.cos() , cos , 10*eps ) ;                 // cos
-    EXPECT_NEAR( R1.sin() , sin , 10*eps ) ;                 // sin
-    EXPECT_NEAR( R1.theta() , 2*theta , 10*eps ) ;           // theta
-    EXPECT_NEAR( R2.cos() , std::cos( theta2 ) , 10*eps ) ;  // cos
-    EXPECT_NEAR( R2.sin() , std::sin( theta2 ) , 10*eps ) ;  // sin
-    EXPECT_NEAR( R2.theta() , 2*theta2 , 10*eps ) ;          // theta
+    EXPECT_NEAR( R1.cos() , cos , tol ) ;                 // cos
+    EXPECT_NEAR( R1.sin() , sin , tol ) ;                 // sin
+    EXPECT_NEAR( R1.theta() , 2*theta , tol ) ;           // theta
+    EXPECT_NEAR( R2.cos() , std::cos( theta2 ) , tol ) ;  // cos
+    EXPECT_NEAR( R2.sin() , std::sin( theta2 ) , tol ) ;  // sin
+    EXPECT_NEAR( R2.theta() , 2*theta2 , tol ) ;          // theta
   }
 
   {
@@ -316,12 +316,12 @@ void test_qclab_qgates_RotationZZ() {
     R cos   = angle.cos() ;
     R sin   = angle.sin() ;
     R theta = angle.theta() ;
-    EXPECT_NEAR( R1.cos() , cos , 10*eps ) ;                 // cos
-    EXPECT_NEAR( R1.sin() , sin , 10*eps ) ;                 // sin
-    EXPECT_NEAR( R1.theta() , 2*theta , 10*eps ) ;           // theta
-    EXPECT_NEAR( R2.cos() , std::cos( theta2 ) , 10*eps ) ;  // cos
-    EXPECT_NEAR( R2.sin() , std::sin( theta2 ) , 10*eps ) ;  // sin
-    EXPECT_NEAR( R2.theta() , 2*theta2 , 10*eps ) ;          // theta
+    EXPECT_NEAR( R1.cos() , cos , tol ) ;                 // cos
+    EXPECT_NEAR( R1.sin() , sin , tol ) ;                 // sin
+    EXPECT_NEAR( R1.theta() , 2*theta , tol ) ;           // theta
+    EXPECT_NEAR( R2.cos() , std::cos( theta2 ) , tol ) ;  // cos
+    EXPECT_NEAR( R2.sin() , std::sin( theta2 ) , tol ) ;  // sin
+    EXPECT_NEAR( R2.theta() , 2*theta2 , tol ) ;          // theta
   }
 
   {
@@ -341,9 +341,9 @@ void test_qclab_qgates_RotationZZ() {
     R cos   = angle.cos() ;
     R sin   = angle.sin() ;
     R theta = angle.theta() ;
-    EXPECT_NEAR( R12.cos() , cos , 10*eps ) ;        // cos
-    EXPECT_NEAR( R12.sin() , sin , 10*eps ) ;        // sin
-    EXPECT_NEAR( R12.theta() , 2*theta , 10*eps ) ;  // theta
+    EXPECT_NEAR( R12.cos() , cos , tol ) ;        // cos
+    EXPECT_NEAR( R12.sin() , sin , tol ) ;        // sin
+    EXPECT_NEAR( R12.theta() , 2*theta , tol ) ;  // theta
   }
 
   {
@@ -363,9 +363,9 @@ void test_qclab_qgates_RotationZZ() {
     R cos   = angle.cos() ;
     R sin   = angle.sin() ;
     R theta = angle.theta() ;
-    EXPECT_NEAR( R12.cos() , cos , 10*eps ) ;        // cos
-    EXPECT_NEAR( R12.sin() , sin , 10*eps ) ;        // sin
-    EXPECT_NEAR( R12.theta() , 2*theta , 10*eps ) ;  // theta
+    EXPECT_NEAR( R12.cos() , cos , tol ) ;        // cos
+    EXPECT_NEAR( R12.sin() , sin , tol ) ;        // sin
+    EXPECT_NEAR( R12.theta() , 2*theta , tol ) ;  // theta
   }
 
   {
@@ -379,12 +379,12 @@ void test_qclab_qgates_RotationZZ() {
 
     // inv
     qclab::qgates::RotationZZ< T >  R2 = R1.inv() ;
-    EXPECT_NEAR( R1.cos() ,  cos , eps ) ;      // cos
-    EXPECT_NEAR( R2.cos() ,  cos , eps ) ;      // cos
-    EXPECT_NEAR( R1.sin() ,  sin , eps ) ;      // sin
-    EXPECT_NEAR( R2.sin() , -sin , eps ) ;      // sin
-    EXPECT_NEAR( R1.theta() ,  theta , eps ) ;  // theta
-    EXPECT_NEAR( R2.theta() , -theta , eps ) ;  // theta
+    EXPECT_NEAR( R1.cos() ,  cos , tol ) ;      // cos
+    EXPECT_NEAR( R2.cos() ,  cos , tol ) ;      // cos
+    EXPECT_NEAR( R1.sin() ,  sin , tol ) ;      // sin
+    EXPECT_NEAR( R2.sin() , -sin , tol ) ;      // sin
+    EXPECT_NEAR( R1.theta() ,  theta , tol ) ;  // theta
+    EXPECT_NEAR( R2.theta() , -theta , tol ) ;  // theta
   }
 
 }

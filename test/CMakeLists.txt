@@ -39,3 +39,19 @@ add_executable( qclab_tests run.cpp
 target_link_libraries( qclab_tests PUBLIC qclabpp gtest )
 target_include_directories( qclab_tests PUBLIC ${PROJECT_SOURCE_DIR}/test )
 
+add_executable( qclab_loadQASM loadQASM.cpp )
+target_link_libraries( qclab_loadQASM PUBLIC qclabpp gtest )
+target_include_directories( qclab_loadQASM PUBLIC ${PROJECT_SOURCE_DIR}/test )
+
+add_executable( qclab_timings_run_qft timings/run_qft.cpp )
+target_link_libraries( qclab_timings_run_qft PUBLIC qclabpp gtest )
+target_include_directories( qclab_timings_run_qft PUBLIC ${PROJECT_SOURCE_DIR}/test )
+
+add_executable( qclab_timings_run_trotter timings/run_trotter.cpp )
+target_link_libraries( qclab_timings_run_trotter PUBLIC qclabpp gtest )
+target_include_directories( qclab_timings_run_trotter PUBLIC ${PROJECT_SOURCE_DIR}/test )
+
+add_executable( qclab_timings_qasm timings/qasm.cpp )
+target_link_libraries( qclab_timings_qasm PUBLIC qclabpp gtest )
+target_include_directories( qclab_timings_qasm PUBLIC ${PROJECT_SOURCE_DIR}/test )
+

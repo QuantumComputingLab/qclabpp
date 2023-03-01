@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_QRotation_hpp
-#define qclab_QRotation_hpp
+#pragma once
 
 #include "qclab/QAngle.hpp"
 
@@ -138,6 +137,4 @@ namespace qclab {
   } ; // class QRotation
 
 } // namespace qclab
-
-#endif
 

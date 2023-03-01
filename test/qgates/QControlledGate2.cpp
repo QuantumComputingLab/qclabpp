@@ -33,6 +33,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot01.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
     V check2 = { 3 , 5 , 7 , 2 } ;
     EXPECT_TRUE( vec2 == check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { cnot01.apply_device( qclab::Op::NoTrans , 2 , vec2_ ) ; }
+    EXPECT_TRUE( vec2 == check2 ) ;
+  #endif
+
     auto mat2 = I2 ;
     cnot01.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot01.matrix() ) ;
@@ -42,10 +49,23 @@ void test_qclab_qgates_QControlledGate2() {
     cnot01.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     V check3 = { 3 , 5 , 2 , 7 , 8 , 3 , 4 , 1 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot01.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
     vec3 = v3 ;
     cnot12.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     check3 = { 3 , 5 , 7 , 2 , 4 , 1 , 3 , 8 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot12.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
+
     auto mat3 = I3 ;
     cnot01.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot01.matrix() , I1 ) ) ;
@@ -58,6 +78,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot12.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
     V check4 = { 3 , 5 , 2 , 7 , 8 , 3 , 4 , 1 , 7 , 2 , 5 , 6 , 5 , 1 , 8 , 9};
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { cnot12.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
+
     auto mat4 = I4 ;
     cnot12.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,
@@ -91,6 +118,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot10.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
     V check2 = { 3 , 7 , 2 , 5 } ;
     EXPECT_TRUE( vec2 == check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { cnot10.apply_device( qclab::Op::NoTrans , 2 , vec2_ ) ; }
+    EXPECT_TRUE( vec2 == check2 ) ;
+  #endif
+
     auto mat2 = I2 ;
     cnot10.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot10.matrix() ) ;
@@ -100,10 +134,23 @@ void test_qclab_qgates_QControlledGate2() {
     cnot10.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     V check3 = { 3 , 5 , 8 , 3 , 4 , 1 , 2 , 7 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot10.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
     vec3 = v3 ;
     cnot21.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     check3 = { 3 , 7 , 2 , 5 , 4 , 3 , 8 , 1 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot21.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
+
     auto mat3 = I3 ;
     cnot10.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot10.matrix() , I1 ) ) ;
@@ -116,6 +163,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot21.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
     V check4 = { 3 , 5 , 8 , 3 , 4 , 1 , 2 , 7 , 7 , 2 , 5 , 1 , 8 , 9 , 5 , 6};
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { cnot21.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
+
     auto mat4 = I4 ;
     cnot21.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,
@@ -154,6 +208,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot01.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
     V check2 = { 5 , 3 , 2 , 7 } ;
     EXPECT_TRUE( vec2 == check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { cnot01.apply_device( qclab::Op::NoTrans , 2 , vec2_ ) ; }
+    EXPECT_TRUE( vec2 == check2 ) ;
+  #endif
+
     auto mat2 = I2 ;
     cnot01.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot01.matrix() ) ;
@@ -163,10 +224,23 @@ void test_qclab_qgates_QControlledGate2() {
     cnot01.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     V check3 = { 2 , 7 , 3 , 5 , 4 , 1 , 8 , 3 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot01.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
     vec3 = v3 ;
     cnot12.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     check3 = { 5 , 3 , 2 , 7 , 1 , 4 , 8 , 3 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot12.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
+
     auto mat3 = I3 ;
     cnot01.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot01.matrix() , I1 ) ) ;
@@ -179,6 +253,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot12.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
     V check4 = { 2 , 7 , 3 , 5 , 4 , 1 , 8 , 3 , 5 , 6 , 7 , 2 , 8 , 9 , 5 , 1};
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { cnot12.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
+
     auto mat4 = I4 ;
     cnot12.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,
@@ -212,6 +293,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot10.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
     V check2 = { 2 , 5 , 3 , 7 } ;
     EXPECT_TRUE( vec2 == check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { cnot10.apply_device( qclab::Op::NoTrans , 2 , vec2_ ) ; }
+    EXPECT_TRUE( vec2 == check2 ) ;
+  #endif
+
     auto mat2 = I2 ;
     cnot10.apply( side , qclab::Op::NoTrans , 2 , mat2 ) ;
     EXPECT_TRUE( mat2 == cnot10.matrix() ) ;
@@ -221,10 +309,23 @@ void test_qclab_qgates_QControlledGate2() {
     cnot10.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     V check3 = { 4 , 1 , 2 , 7 , 3 , 5 , 8 , 3 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot10.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
     vec3 = v3 ;
     cnot21.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     check3 = { 2 , 5 , 3 , 7 , 8 , 1 , 4 , 3 } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { cnot21.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
+
     auto mat3 = I3 ;
     cnot10.apply( side , qclab::Op::NoTrans , 3 , mat3 ) ;
     EXPECT_TRUE( mat3 == qclab::dense::kron( cnot10.matrix() , I1 ) ) ;
@@ -237,6 +338,13 @@ void test_qclab_qgates_QControlledGate2() {
     cnot21.apply( qclab::Op::NoTrans , 4 , vec4 ) ;
     V check4 = { 4 , 1 , 2 , 7 , 3 , 5 , 8 , 3 , 8 , 9 , 5 , 6 , 7 , 2 , 5 , 1};
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { cnot21.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
+
     auto mat4 = I4 ;
     cnot21.apply( side , qclab::Op::NoTrans , 4 , mat4 ) ;
     EXPECT_TRUE( mat4 == qclab::dense::kron( I1 ,

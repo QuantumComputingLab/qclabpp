@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_QAngle_hpp
-#define qclab_QAngle_hpp
+#pragma once
 
 #include <cmath>
 
@@ -115,6 +114,4 @@ namespace qclab {
   } ; // class QAngle
 
 } // namespace qclab
-
-#endif
 

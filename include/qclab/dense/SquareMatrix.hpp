@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen 2021.
 
-#ifndef qclab_dense_SquareMatrix_hpp
-#define qclab_dense_SquareMatrix_hpp
+#pragma once
 
 #include "qclab/dense/memory.hpp"
 
@@ -236,6 +235,4 @@ namespace qclab {
   } // namespace dense
 
 } // namespace qclab
-
-#endif
 

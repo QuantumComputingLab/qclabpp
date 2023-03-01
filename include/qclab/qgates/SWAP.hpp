@@ -1,10 +1,8 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_qgates_SWAP_hpp
-#define qclab_qgates_SWAP_hpp
+#pragma once
 
 #include "qclab/qgates/QGate2.hpp"
-#include "qclab/qgates/CNOT.hpp"
 #include <array>
 
 namespace qclab {
@@ -76,36 +74,18 @@ namespace qclab {
 
         // apply
         void apply( Op op , const int nbQubits , std::vector< T >& vector ,
-                    const int offset = 0 ) const override {
-          assert( nbQubits >= 2 ) ;
-          assert( vector.size() == 1 << nbQubits ) ;
-          const int qubit0 = qubits_[0] + offset ;
-          const int qubit1 = qubits_[1] + offset ;
-          assert( qubit0 < nbQubits ) ; assert( qubit1 < nbQubits ) ;
-          // 3x CNOT
-          qclab::qgates::CNOT< T > cnot01( qubit0 , qubit1 ) ;
-          qclab::qgates::CNOT< T > cnot10( qubit1 , qubit0 ) ;
-          cnot01.apply( op , nbQubits , vector ) ;
-          cnot10.apply( op , nbQubits , vector ) ;
-          cnot01.apply( op , nbQubits , vector ) ;
-        }
+                    const int offset = 0 ) const override ;
+
+      #ifdef QCLAB_OMP_OFFLOADING
+        // apply_device
+        void apply_device( Op op , const int nbQubits , T* vector ,
+                           const int offset = 0 ) const override ;
+      #endif
 
         // apply
         void apply( Side side , Op op , const int nbQubits ,
                     qclab::dense::SquareMatrix< T >& matrix ,
-                    const int offset = 0 ) const override {
-          assert( nbQubits >= 2 ) ;
-          assert( matrix.size() == 1 << nbQubits ) ;
-          const int qubit0 = qubits_[0] + offset ;
-          const int qubit1 = qubits_[1] + offset ;
-          assert( qubit0 < nbQubits ) ; assert( qubit1 < nbQubits ) ;
-          // 3x CNOT
-          qclab::qgates::CNOT< T > cnot01( qubit0 , qubit1 ) ;
-          qclab::qgates::CNOT< T > cnot10( qubit1 , qubit0 ) ;
-          cnot01.apply( side , op , nbQubits , matrix ) ;
-          cnot10.apply( side , op , nbQubits , matrix ) ;
-          cnot01.apply( side , op , nbQubits , matrix ) ;
-        }
+                    const int offset = 0 ) const override ;
 
         // print
 
@@ -149,6 +129,4 @@ namespace qclab {
   } // namespace qgates
 
 } // namespace qclab
-
-#endif
 

@@ -14,7 +14,7 @@ The recommended way of building the QCLAB++ library is as follows:
 
 1.      Install
         \code {.bash}
-        git clone ...
+        git clone https://github.com/QuantumComputingLab/qclabpp.git
         \endcode
 
 2.      CMake
@@ -28,12 +28,35 @@ The recommended way of building the QCLAB++ library is as follows:
 
 3.      Run tests
         \code {.bash}
-        ./test/run
+        ./test/qclab_tests
         \endcode
 
 4.      Generate documentation
         \code {.bash}
         doxygen doxygen.dox
+        \endcode
+
+
+## How to run on Perlmutter?
+
+1.      Install
+        \code {.bash}
+        git clone https://github.com/QuantumComputingLab/qclabpp.git
+        \endcode
+
+2.      CMake
+        \code {.bash}
+        module swap PrgEnv-[...] PrgEnv-nvidia
+        module load cmake
+        cd qclabpp
+        cmake -H. -Brelease_nvc -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=CC -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fast -mp=gpu -gpu=cc80" -DQCLAB_OMP_OFFLOADING=ON
+        cd release_nvc
+        make -j8
+        \endcode
+
+3.      Run tests
+        \code {.bash}
+        ./test/qclab_tests
         \endcode
 
 

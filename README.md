@@ -35,6 +35,26 @@ The recommended way of building QCLAB++ is as follows:
         doxygen doxygen.dox
 
 
+### How to run on Perlmutter? ###
+
+1.      Install
+
+        git clone https://github.com/QuantumComputingLab/qclabpp.git
+
+2.      CMake
+
+        module swap PrgEnv-[...] PrgEnv-nvidia
+        module load cmake
+        cd qclabpp
+        cmake -H. -Brelease_nvc -DCMAKE_C_COMPILER=cc -DCMAKE_CXX_COMPILER=CC -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fast -mp=gpu -gpu=cc80" -DQCLAB_OMP_OFFLOADING=ON
+        cd release_nvc
+        make -j8 qclab_tests
+
+3.      Run tests
+
+        ./test/qclab_tests
+
+
 ## Developers - Lawrence Berkeley National Laboratory
 - [Roel Van Beeumen](http://www.roelvanbeeumen.be/) - rvanbeeumen@lbl.gov
 - [Daan Camps](http://campsd.github.io/) - dcamps@lbl.gov

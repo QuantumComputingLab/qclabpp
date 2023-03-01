@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "qclab/qgates/iSWAP.hpp"
+#include "qclab/dense/kron.hpp"
 
 template <typename T>
 void test_qclab_qgates_iSWAP_check( const std::vector< T >& v1 ,
@@ -127,20 +128,44 @@ void test_qclab_qgates_iSWAP() {
     iswap.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
     V check2 = { 3 , T(0,2) , T(0,5) , 7 } ;
     test_qclab_qgates_iSWAP_check( vec2 , check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { iswap.apply_device( qclab::Op::NoTrans , 2 , vec2_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec2 , check2 ) ;
+  #endif
     vec2 = v2 ;
     iswap.apply( qclab::Op::ConjTrans , 2 , vec2 ) ;
     check2 = { 3 , T(0,-2) , T(0,-5) , 7 } ;
     test_qclab_qgates_iSWAP_check( vec2 , check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { iswap.apply_device( qclab::Op::ConjTrans , 2 , vec2_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec2 , check2 ) ;
+  #endif
 
     // apply (3 qubits)
     auto vec3 = v3 ;
     iswap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     V check3 = { 3 , 5 , T(0,4) , T(0,1) , T(0,2) , T(0,7) , 8 , 3 } ;
     test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { iswap.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #endif
     vec3 = v3 ;
     iswap.apply( qclab::Op::ConjTrans , 3 , vec3 ) ;
     check3 = { 3 , 5 , T(0,-4) , T(0,-1) , T(0,-2) , T(0,-7) , 8 , 3 } ;
     test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { iswap.apply_device( qclab::Op::ConjTrans , 3 , vec3_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #endif
 
     int qnew[] = { 1 , 2 } ;
     iswap.setQubits( &qnew[0] ) ;
@@ -148,10 +173,22 @@ void test_qclab_qgates_iSWAP() {
     iswap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     check3 = { 3 , T(0,2) , T(0,5) , 7 , 4 , T(0,8) , T(0,1) , 3 } ;
     test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { iswap.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #endif
     vec3 = v3 ;
     iswap.apply( qclab::Op::ConjTrans , 3 , vec3 ) ;
     check3 = { 3 , T(0,-2) , T(0,-5) , 7 , 4 , T(0,-8) , T(0,-1) , 3 } ;
     test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { iswap.apply_device( qclab::Op::ConjTrans , 3 , vec3_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #endif
 
     // apply (4 qubits)
     auto vec4 = v4 ;
@@ -159,11 +196,23 @@ void test_qclab_qgates_iSWAP() {
     V check4 = { 3 , 5 , T(0,4) , T(0,1) , T(0,2) , T(0,7) , 8 , 3 ,
                  7 , 2 , T(0,8) , T(0,9) , T(0,5) , T(0,6) , 5 , 1 } ;
     test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { iswap.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #endif
     vec4 = v4 ;
     iswap.apply( qclab::Op::ConjTrans , 4 , vec4 ) ;
     check4 = { 3 , 5 , T(0,-4) , T(0,-1) , T(0,-2) , T(0,-7) , 8 , 3 ,
                7 , 2 , T(0,-8) , T(0,-9) , T(0,-5) , T(0,-6) , 5 , 1 } ;
     test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { iswap.apply_device( qclab::Op::ConjTrans , 4 , vec4_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #endif
 
     qnew[0] = 0 ;
     qnew[1] = 1 ;
@@ -173,11 +222,23 @@ void test_qclab_qgates_iSWAP() {
     check4 = { 3 , 5 , 2 , 7 , T(0,7) , T(0,2) , T(0,5) , T(0,6) ,
                T(0,4) , T(0,1) , T(0,8) , T(0,3) , 8 , 9 , 5 , 1 } ;
     test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { iswap.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #endif
     vec4 = v4 ;
     iswap.apply( qclab::Op::ConjTrans , 4 , vec4 ) ;
     check4 = { 3 , 5 , 2 , 7 , T(0,-7) , T(0,-2) , T(0,-5) , T(0,-6) ,
                T(0,-4) , T(0,-1) , T(0,-8) , T(0,-3) , 8 , 9 , 5 , 1 } ;
     test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { iswap.apply_device( qclab::Op::ConjTrans , 4 , vec4_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #endif
 
     qnew[0] = 2 ;
     qnew[1] = 3 ;
@@ -187,11 +248,23 @@ void test_qclab_qgates_iSWAP() {
     check4 = { 3 , T(0,2) , T(0,5) , 7 , 4 , T(0,8) , T(0,1) , 3 ,
                7 , T(0,5) , T(0,2) , 6 , 8 , T(0,5) , T(0,9) , 1 } ;
     test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { iswap.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #endif
     vec4 = v4 ;
     iswap.apply( qclab::Op::ConjTrans , 4 , vec4 ) ;
     check4 = { 3 , T(0,-2) , T(0,-5) , 7 , 4 , T(0,-8) , T(0,-1) , 3 ,
                7 , T(0,-5) , T(0,-2) , 6 , 8 , T(0,-5) , T(0,-9) , 1 } ;
     test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { iswap.apply_device( qclab::Op::ConjTrans , 4 , vec4_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec4 , check4 ) ;
+  #endif
   }
 
   {
@@ -202,10 +275,22 @@ void test_qclab_qgates_iSWAP() {
     iswap.apply( qclab::Op::NoTrans , 3 , vec3 ) ;
     V check3 = { 3 , T(0,4) , 2 , T(0,8) , T(0,5) , 1 , T(0,7) , 3 } ;
     test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { iswap.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #endif
     vec3 = v3 ;
     iswap.apply( qclab::Op::ConjTrans , 3 , vec3 ) ;
     check3 = { 3 , T(0,-4) , 2 , T(0,-8) , T(0,-5) , 1 , T(0,-7) , 3 } ;
     test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { iswap.apply_device( qclab::Op::ConjTrans , 3 , vec3_ ) ; }
+    test_qclab_qgates_iSWAP_check( vec3 , check3 ) ;
+  #endif
   }
 
   {

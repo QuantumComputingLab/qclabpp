@@ -1,12 +1,12 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_QCircuit_hpp
-#define qclab_QCircuit_hpp
+#pragma once
 
 #include "qclab/QObject.hpp"
 #include "qclab/QAdjustable.hpp"
 #include "qclab/dense/kron.hpp"
 #include "qclab/dense/transpose.hpp"
+#include "qclab/io/QASMFile.hpp"
 #include <cassert>
 #include <numeric>
 #include <vector>
@@ -78,6 +78,20 @@ namespace qclab {
         assert( nbGates >= 0 ) ;
       } // QCircuit(nbQubits,offset,gates)
 
+      /// Constructs a quantum circuit from the QASM file `filename`.
+      QCircuit( const std::string filename , const int offset = 0 )
+      : offset_( offset )
+      {
+        // QASM file
+        qclab::io::QASMFile qasm( filename ) ;
+        // number of qubits
+        nbQubits_ = qasm.nbQubits() ;
+        // loop over gates in file
+        for ( auto& gate : qasm.gates< G >() ) {
+          push_back( std::move( gate ) ) ;
+        }
+      } // QCircuit(filename)
+
       // nbQubits
       inline int nbQubits() const override { return nbQubits_ ; }
 
@@ -128,10 +142,35 @@ namespace qclab {
         }
       }
 
+    #ifdef QCLAB_OMP_OFFLOADING
+      // apply_device
+      void apply_device( Op op , const int nbQubits , T* vector ,
+                         const int offset = 0 ) const override {
+        if ( op == Op::NoTrans ) {
+          // NoTrans
+          for ( auto it = begin(); it != end(); ++it ) {
+            (*it)->apply_device( op , nbQubits , vector , offset_ + offset ) ;
+          }
+        } else {
+          // [Conj]Trans
+          for ( auto it = rbegin(); it != rend(); ++it ) {
+            (*it)->apply_device( op , nbQubits , vector , offset_ + offset ) ;
+          }
+        }
+      }
+    #endif
+
       /// Simulates this quantum circuit for the given vector `vector`.
       void simulate( std::vector< T >& vector ) const {
         apply( Op::NoTrans , nbQubits_ , vector ) ;
       }
+
+    #ifdef QCLAB_OMP_OFFLOADING
+      /// Simulates this quantum circuit for the given vector `vector`.
+      void simulate_device( T* vector ) const {
+        apply_device( Op::NoTrans , nbQubits_ , vector ) ;
+      }
+    #endif
 
       // apply
       void apply( Side side , Op op , const int nbQubits ,
@@ -391,6 +430,4 @@ namespace qclab {
   }
 
 } // namespace qclab
-
-#endif
 

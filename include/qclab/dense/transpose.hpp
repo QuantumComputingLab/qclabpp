@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen 2021.
 
-#ifndef qclab_dense_transpose_hpp
-#define qclab_dense_transpose_hpp
+#pragma once
 
 #include "qclab/util.hpp"
 
@@ -74,6 +73,4 @@ namespace qclab {
   } // namespace dense
 
 } // namespace qclab
-
-#endif
 

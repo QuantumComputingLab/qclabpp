@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_qgates_RotationZ_hpp
-#define qclab_qgates_RotationZ_hpp
+#pragma once
 
 #include "qclab/qgates/QRotationGate1.hpp"
 
@@ -109,6 +108,19 @@ namespace qclab {
         }
 
         // apply
+        void apply( Op op , const int nbQubits , std::vector< T >& vector ,
+                    const int offset = 0 ) const override ;
+
+      #ifdef QCLAB_OMP_OFFLOADING
+        // apply_device
+        void apply_device( Op op , const int nbQubits , T* vector ,
+                           const int offset = 0 ) const override ;
+      #endif
+
+        // apply
+        void apply( Side side , Op op , const int nbQubits ,
+                    qclab::dense::SquareMatrix< T >& matrix ,
+                    const int offset = 0 ) const override ;
 
         // print
 
@@ -187,6 +199,4 @@ namespace qclab {
   } // namespace qgates
 
 } // namespace qclab
-
-#endif
 

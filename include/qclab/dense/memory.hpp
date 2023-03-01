@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen 2021.
 
-#ifndef qclab_dense_memory_hpp
-#define qclab_dense_memory_hpp
+#pragma once
 
 #include <cassert>
 #include <memory>
@@ -47,6 +46,4 @@ namespace qclab {
   } // namespace qclab
 
 } // namespace dense
-
-#endif
 

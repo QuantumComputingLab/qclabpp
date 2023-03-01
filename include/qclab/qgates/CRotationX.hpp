@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_qgates_CRotationX_hpp
-#define qclab_qgates_CRotationX_hpp
+#pragma once
 
 #include "qclab/qgates/QControlledGate2.hpp"
 #include "qclab/qgates/RotationX.hpp"
@@ -229,6 +228,4 @@ namespace qclab {
   } // namespace qgates
 
 } // namespace qclab
-
-#endif
 

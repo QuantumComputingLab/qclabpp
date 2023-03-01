@@ -1,7 +1,6 @@
 //  (C) Copyright Roel Van Beeumen and Daan Camps 2021.
 
-#ifndef qclab_qasm_hpp
-#define qclab_qasm_hpp
+#pragma once
 
 #include <iostream>
 
@@ -218,6 +217,4 @@ namespace qclab {
   }
 
 } // namespace qclab
-
-#endif
 

@@ -28,6 +28,12 @@ void test_qclab_qgates_QGate2() {
     XX.apply( qclab::Op::NoTrans , 2 , vec2 ) ;
     V check2 = { T(0,-7) , T(0,-2) , T(0,-5) , T(0,-3) } ;
     EXPECT_TRUE( vec2 == check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { XX.apply_device( qclab::Op::NoTrans , 2 , vec2_ ) ; }
+    EXPECT_TRUE( vec2 == check2 ) ;
+  #endif
 
     // nbQubits = 3
     auto vec3 = v3 ;
@@ -35,6 +41,12 @@ void test_qclab_qgates_QGate2() {
     V check3 = { T(0,-8) , T(0,-3) , T(0,-4) , T(0,-1) ,
                  T(0,-2) , T(0,-7) , T(0,-3) , T(0,-5) } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { XX.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
 
     int qubits[2] = { 1 , 2 } ;
     XX.setQubits( &qubits[0] ) ;
@@ -43,6 +55,12 @@ void test_qclab_qgates_QGate2() {
     check3 = { T(0,-7) , T(0,-2) , T(0,-5) , T(0,-3) ,
                T(0,-3) , T(0,-8) , T(0,-1) , T(0,-4) } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { XX.apply_device( qclab::Op::NoTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
 
     // nbQubits = 4
     auto vec4 = v4 ;
@@ -52,6 +70,12 @@ void test_qclab_qgates_QGate2() {
                  T(0,-5) , T(0,-1) , T(0,-8) , T(0,-9) ,
                  T(0,-5) , T(0,-6) , T(0,-7) , T(0,-2) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { XX.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
 
     qubits[0] = 0 ;
     qubits[1] = 1 ;
@@ -63,6 +87,12 @@ void test_qclab_qgates_QGate2() {
                T(0,-4) , T(0,-1) , T(0,-8) , T(0,-3) ,
                T(0,-3) , T(0,-5) , T(0,-2) , T(0,-7) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { XX.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
 
     qubits[0] = 2 ;
     qubits[1] = 3 ;
@@ -74,6 +104,12 @@ void test_qclab_qgates_QGate2() {
                T(0,-6) , T(0,-5) , T(0,-2) , T(0,-7) ,
                T(0,-1) , T(0,-5) , T(0,-9) , T(0,-8) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { XX.apply_device( qclab::Op::NoTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
   }
 
   // apply (Trans)
@@ -85,6 +121,12 @@ void test_qclab_qgates_QGate2() {
     YY.apply( qclab::Op::Trans , 2 , vec2 ) ;
     V check2 = { T(0,7) , T(0,-2) , T(0,-5) , T(0,3) } ;
     EXPECT_TRUE( vec2 == check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { YY.apply_device( qclab::Op::Trans , 2 , vec2_ ) ; }
+    EXPECT_TRUE( vec2 == check2 ) ;
+  #endif
 
     // nbQubits = 3
     auto vec3 = v3 ;
@@ -92,6 +134,12 @@ void test_qclab_qgates_QGate2() {
     V check3 = { T(0, 8) , T(0, 3) , T(0,-4) , T(0,-1) ,
                  T(0,-2) , T(0,-7) , T(0, 3) , T(0, 5) } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { YY.apply_device( qclab::Op::Trans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
 
     int qubits[2] = { 1 , 2 } ;
     YY.setQubits( &qubits[0] ) ;
@@ -100,6 +148,12 @@ void test_qclab_qgates_QGate2() {
     check3 = { T(0, 7) , T(0,-2) , T(0,-5) , T(0, 3) ,
                T(0, 3) , T(0,-8) , T(0,-1) , T(0, 4) } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { YY.apply_device( qclab::Op::Trans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
 
     // nbQubits = 4
     auto vec4 = v4 ;
@@ -109,6 +163,12 @@ void test_qclab_qgates_QGate2() {
                  T(0, 5) , T(0, 1) , T(0,-8) , T(0,-9) ,
                  T(0,-5) , T(0,-6) , T(0, 7) , T(0, 2) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { YY.apply_device( qclab::Op::Trans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
 
     qubits[0] = 0 ;
     qubits[1] = 1 ;
@@ -120,6 +180,12 @@ void test_qclab_qgates_QGate2() {
                T(0,-4) , T(0,-1) , T(0,-8) , T(0,-3) ,
                T(0, 3) , T(0, 5) , T(0, 2) , T(0, 7) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { YY.apply_device( qclab::Op::Trans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
 
     qubits[0] = 2 ;
     qubits[1] = 3 ;
@@ -131,6 +197,12 @@ void test_qclab_qgates_QGate2() {
                T(0, 6) , T(0,-5) , T(0,-2) , T(0, 7) ,
                T(0, 1) , T(0,-5) , T(0,-9) , T(0, 8) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { YY.apply_device( qclab::Op::Trans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
   }
 
   // apply (ConjTrans)
@@ -142,6 +214,12 @@ void test_qclab_qgates_QGate2() {
     YY.apply( qclab::Op::ConjTrans , 2 , vec2 ) ;
     V check2 = { T(0,-7) , T(0,2) , T(0,5) , T(0,-3) } ;
     EXPECT_TRUE( vec2 == check2 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec2 = v2 ; T* vec2_ = vec2.data() ;
+    #pragma omp target data map(tofrom:vec2_[0:4])
+    { YY.apply_device( qclab::Op::ConjTrans , 2 , vec2_ ) ; }
+    EXPECT_TRUE( vec2 == check2 ) ;
+  #endif
 
     // nbQubits = 3
     auto vec3 = v3 ;
@@ -149,6 +227,12 @@ void test_qclab_qgates_QGate2() {
     V check3 = { T(0,-8) , T(0,-3) , T(0, 4) , T(0, 1) ,
                  T(0, 2) , T(0, 7) , T(0,-3) , T(0,-5) } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ; T* vec3_ = vec3.data() ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { YY.apply_device( qclab::Op::ConjTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
 
     int qubits[2] = { 1 , 2 } ;
     YY.setQubits( &qubits[0] ) ;
@@ -157,6 +241,12 @@ void test_qclab_qgates_QGate2() {
     check3 = { T(0,-7) , T(0, 2) , T(0, 5) , T(0,-3) ,
                T(0,-3) , T(0, 8) , T(0, 1) , T(0,-4) } ;
     EXPECT_TRUE( vec3 == check3 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec3 = v3 ;
+    #pragma omp target data map(tofrom:vec3_[0:8])
+    { YY.apply_device( qclab::Op::ConjTrans , 3 , vec3_ ) ; }
+    EXPECT_TRUE( vec3 == check3 ) ;
+  #endif
 
     // nbQubits = 4
     auto vec4 = v4 ;
@@ -166,6 +256,12 @@ void test_qclab_qgates_QGate2() {
                  T(0,-5) , T(0,-1) , T(0, 8) , T(0, 9) ,
                  T(0, 5) , T(0, 6) , T(0,-7) , T(0,-2) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ; T* vec4_ = vec4.data() ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { YY.apply_device( qclab::Op::ConjTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
 
     qubits[0] = 0 ;
     qubits[1] = 1 ;
@@ -177,6 +273,12 @@ void test_qclab_qgates_QGate2() {
                T(0, 4) , T(0, 1) , T(0, 8) , T(0, 3) ,
                T(0,-3) , T(0,-5) , T(0,-2) , T(0,-7) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { YY.apply_device( qclab::Op::ConjTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
 
     qubits[0] = 2 ;
     qubits[1] = 3 ;
@@ -188,6 +290,12 @@ void test_qclab_qgates_QGate2() {
                T(0,-6) , T(0, 5) , T(0, 2) , T(0,-7) ,
                T(0,-1) , T(0, 5) , T(0, 9) , T(0,-8) } ;
     EXPECT_TRUE( vec4 == check4 ) ;
+  #ifdef QCLAB_OMP_OFFLOADING
+    vec4 = v4 ;
+    #pragma omp target data map(tofrom:vec4_[0:16])
+    { YY.apply_device( qclab::Op::ConjTrans , 4 , vec4_ ) ; }
+    EXPECT_TRUE( vec4 == check4 ) ;
+  #endif
   }
 
 
